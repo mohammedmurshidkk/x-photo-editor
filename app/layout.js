@@ -34,9 +34,8 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          <ClerkProvider appearance={{}}>
+          <ClerkProvider>
             <ConvexClientProvider>
-              {/* <Header /> */}
               <main className="bg-slate-900 min-h-screen text-white overflow-x-hidden">
                 <FloatingShapes />
                 <Toaster richColors />

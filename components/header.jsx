@@ -10,6 +10,7 @@ import { BarLoader } from 'react-spinners';
 import { Authenticated, Unauthenticated } from 'convex/react';
 import { motion } from 'framer-motion';
 import { LayoutDashboard } from 'lucide-react';
+import { clerkTheme } from '@/app/clerk-theme';
 
 const navLinks = [
   { href: '#features', label: 'Features' },
@@ -66,8 +67,9 @@ function Header() {
 
             <UserButton
               appearance={{
+                ...clerkTheme,
                 elements: {
-                  avatarBox: 'w-8 h-8 rounded-lg border border-white/20',
+                  avatarBox: 'w-10 h-10 rounded-lg border border-white/20',
                   userButtonPopoverCard:
                     'shadow-xl backdrop-blur-md bg-slate-900/90 border border-white/20',
                   userPreviewMainIdentifier: 'font-semibold text-white',
