@@ -1,33 +1,33 @@
-'use client';
+'use client'
 
-import { SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React, { useState } from 'react';
-import { Button } from './ui/button';
-import useStoreUserEffect from '@/hooks/use-store-user-effect';
-import { BarLoader } from 'react-spinners';
-import { Authenticated, Unauthenticated } from 'convex/react';
-import { motion } from 'framer-motion';
-import { LayoutDashboard } from 'lucide-react';
-import { clerkTheme } from '@/app/clerk-theme';
+import { SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import React, { useState } from 'react'
+import { Button } from './ui/button'
+import useStoreUserEffect from '@/hooks/use-store-user-effect'
+import { BarLoader } from 'react-spinners'
+import { Authenticated, Unauthenticated } from 'convex/react'
+import { motion } from 'framer-motion'
+import { LayoutDashboard } from 'lucide-react'
+import { clerkTheme } from '@/app/clerk-theme'
 
 const navLinks = [
   { href: '#features', label: 'Features' },
   { href: '#pricing', label: 'Pricing' },
   { href: '#contact', label: 'Contact' },
-];
+]
 
 function Header() {
-  const pathname = usePathname();
-  const { isLoading } = useStoreUserEffect();
-  const [active, setActive] = useState('');
+  const pathname = usePathname()
+  const { isLoading } = useStoreUserEffect()
+  const [active, setActive] = useState('')
 
   return (
     <header className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 text-nowrap">
       <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-full px-8 py-3 flex items-center justify-between gap-8">
         <Link href="/" className="mr-10 md:mr-20">
-          <span className='font-extrabold text-4xl font-stretch-200%'>X</span>
+          <span className="font-extrabold text-4xl font-stretch-200%">X</span>
         </Link>
 
         {pathname === '/' && (
@@ -99,7 +99,7 @@ function Header() {
         )}
       </div>
     </header>
-  );
+  )
 }
 
-export default Header;
+export default Header

@@ -1,4 +1,3 @@
-
 export const clerkTheme = {
   variables: {
     colorInputText: '#ffffff',
@@ -35,4 +34,4 @@ export const clerkTheme = {
       boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
     },
   },
-};
+}

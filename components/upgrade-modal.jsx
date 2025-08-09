@@ -1,17 +1,17 @@
-'use client';
+'use client'
 
-import React from 'react';
-import { X, Crown, Zap } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import React from 'react'
+import { X, Crown, Zap } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/components/ui/dialog';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { PricingTable } from '@clerk/nextjs';
+} from '@/components/ui/dialog'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { PricingTable } from '@clerk/nextjs'
 
 export function UpgradeModal({ isOpen, onClose, restrictedTool, reason }) {
   const getToolName = (toolId) => {
@@ -19,9 +19,9 @@ export function UpgradeModal({ isOpen, onClose, restrictedTool, reason }) {
       background: 'AI Background Tools',
       ai_extender: 'AI Image Extender',
       ai_edit: 'AI Editor',
-    };
-    return toolNames[toolId] || 'Premium Feature';
-  };
+    }
+    return toolNames[toolId] || 'Premium Feature'
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -64,5 +64,5 @@ export function UpgradeModal({ isOpen, onClose, restrictedTool, reason }) {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

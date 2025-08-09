@@ -1,5 +1,5 @@
-import { defineSchema, defineTable } from 'convex/server';
-import { v } from 'convex/values';
+import { defineSchema, defineTable } from 'convex/server'
+import { v } from 'convex/values'
 
 export default defineSchema({
   users: defineTable({
@@ -49,4 +49,4 @@ export default defineSchema({
     .index('by_user', ['userId']) // Get user's projects
     .index('by_user_updated', ['userId', 'updatedAt']) // Recent projects
     .index('by_folder', ['folderId']), // Projects in folder
-});
+})

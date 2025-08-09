@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
+import React, { useState } from 'react'
+import { Button } from '@/components/ui/button'
 import {
   Wand2,
   Info,
@@ -11,95 +11,95 @@ import {
   CheckCircle,
   AlertTriangle,
   Camera,
-} from "lucide-react";
-import { FabricImage } from "fabric";
-import { useConvexMutation } from "@/hooks/use-convex-query";
-import { api } from "@/convex/_generated/api";
-import { useCanvas } from "@/context/canvas-context";
+} from 'lucide-react'
+import { FabricImage } from 'fabric'
+import { useConvexMutation } from '@/hooks/use-convex-query'
+import { api } from '@/convex/_generated/api'
+import { useCanvas } from '@/context/canvas-context'
 
 const RETOUCH_PRESETS = [
   {
-    key: "ai_retouch",
-    label: "AI Retouch",
-    description: "Improve image quality with AI",
+    key: 'ai_retouch',
+    label: 'AI Retouch',
+    description: 'Improve image quality with AI',
     icon: Sparkles,
-    transform: "e-retouch",
+    transform: 'e-retouch',
     recommended: true,
   },
   {
-    key: "ai_upscale",
-    label: "AI Upscale",
-    description: "Increase resolution to 16MP",
+    key: 'ai_upscale',
+    label: 'AI Upscale',
+    description: 'Increase resolution to 16MP',
     icon: User,
-    transform: "e-upscale",
+    transform: 'e-upscale',
     recommended: false,
   },
   {
-    key: "enhance_sharpen",
-    label: "Enhance & Sharpen",
-    description: "AI retouch + contrast + sharpening",
+    key: 'enhance_sharpen',
+    label: 'Enhance & Sharpen',
+    description: 'AI retouch + contrast + sharpening',
     icon: Mountain,
-    transform: "e-retouch,e-contrast,e-sharpen",
+    transform: 'e-retouch,e-contrast,e-sharpen',
     recommended: false,
   },
   {
-    key: "premium_quality",
-    label: "Premium Quality",
-    description: "AI retouch + upscale + enhancements",
+    key: 'premium_quality',
+    label: 'Premium Quality',
+    description: 'AI retouch + upscale + enhancements',
     icon: Camera,
-    transform: "e-retouch,e-upscale,e-contrast,e-sharpen",
+    transform: 'e-retouch,e-upscale,e-contrast,e-sharpen',
     recommended: false,
   },
-];
+]
 
 export function AIEdit({ project }) {
-  const { canvasEditor, setProcessingMessage } = useCanvas();
-  const [selectedPreset, setSelectedPreset] = useState("ai_retouch"); // Fixed default
+  const { canvasEditor, setProcessingMessage } = useCanvas()
+  const [selectedPreset, setSelectedPreset] = useState('ai_retouch') // Fixed default
   const { mutate: updateProject } = useConvexMutation(
-    api.projects.updateProject
-  );
+    api.projects.updateProject,
+  )
 
   const getMainImage = () =>
-    canvasEditor?.getObjects().find((obj) => obj.type === "image") || null;
+    canvasEditor?.getObjects().find((obj) => obj.type === 'image') || null
 
   const buildRetouchUrl = (imageUrl, presetKey) => {
-    const preset = RETOUCH_PRESETS.find((p) => p.key === presetKey);
-    if (!imageUrl || !preset) return imageUrl;
+    const preset = RETOUCH_PRESETS.find((p) => p.key === presetKey)
+    if (!imageUrl || !preset) return imageUrl
 
-    const [baseUrl, existingQuery] = imageUrl.split("?");
+    const [baseUrl, existingQuery] = imageUrl.split('?')
 
     if (existingQuery) {
-      const params = new URLSearchParams(existingQuery);
-      const existingTr = params.get("tr");
+      const params = new URLSearchParams(existingQuery)
+      const existingTr = params.get('tr')
 
       if (existingTr) {
         // Append retouch to existing transformations
-        return `${baseUrl}?tr=${existingTr},${preset.transform}`;
+        return `${baseUrl}?tr=${existingTr},${preset.transform}`
       }
     }
 
     // No existing transformations, create new
-    return `${baseUrl}?tr=${preset.transform}`;
-  };
+    return `${baseUrl}?tr=${preset.transform}`
+  }
 
   const applyRetouch = async () => {
-    const mainImage = getMainImage();
+    const mainImage = getMainImage()
     const selectedPresetData = RETOUCH_PRESETS.find(
-      (p) => p.key === selectedPreset
-    );
+      (p) => p.key === selectedPreset,
+    )
 
-    if (!mainImage || !project || !selectedPresetData) return;
+    if (!mainImage || !project || !selectedPresetData) return
 
-    setProcessingMessage(`Enhancing image with ${selectedPresetData.label}...`);
+    setProcessingMessage(`Enhancing image with ${selectedPresetData.label}...`)
 
     try {
       const currentImageUrl =
-        mainImage.getSrc?.() || mainImage._element?.src || mainImage.src;
-      const retouchedUrl = buildRetouchUrl(currentImageUrl, selectedPreset);
+        mainImage.getSrc?.() || mainImage._element?.src || mainImage.src
+      const retouchedUrl = buildRetouchUrl(currentImageUrl, selectedPreset)
 
       const retouchedImage = await FabricImage.fromURL(retouchedUrl, {
-        crossOrigin: "anonymous",
-      });
+        crossOrigin: 'anonymous',
+      })
 
       // Preserve current image properties
       const imageProps = {
@@ -112,15 +112,15 @@ export function AIEdit({ project }) {
         scaleY: mainImage.scaleY,
         selectable: true,
         evented: true,
-      };
+      }
 
       // Replace image
-      canvasEditor.remove(mainImage);
-      retouchedImage.set(imageProps);
-      canvasEditor.add(retouchedImage);
-      retouchedImage.setCoords();
-      canvasEditor.setActiveObject(retouchedImage);
-      canvasEditor.requestRenderAll();
+      canvasEditor.remove(mainImage)
+      retouchedImage.set(imageProps)
+      canvasEditor.add(retouchedImage)
+      retouchedImage.setCoords()
+      canvasEditor.setActiveObject(retouchedImage)
+      canvasEditor.requestRenderAll()
 
       // Update project
       await updateProject({
@@ -128,21 +128,21 @@ export function AIEdit({ project }) {
         currentImageUrl: retouchedUrl,
         canvasState: canvasEditor.toJSON(),
         activeTransformations: selectedPresetData.transform,
-      });
+      })
     } catch (error) {
-      console.error("Error retouching image:", error);
-      alert("Failed to retouch image. Please try again.");
+      console.error('Error retouching image:', error)
+      alert('Failed to retouch image. Please try again.')
     } finally {
-      setProcessingMessage(null);
+      setProcessingMessage(null)
     }
-  };
+  }
 
   // Early returns
   if (!canvasEditor) {
-    return <div className="p-4 text-white/70 text-sm">Canvas not ready</div>;
+    return <div className="p-4 text-white/70 text-sm">Canvas not ready</div>
   }
 
-  const mainImage = getMainImage();
+  const mainImage = getMainImage()
   if (!mainImage) {
     return (
       <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4">
@@ -156,14 +156,14 @@ export function AIEdit({ project }) {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   const hasActiveTransformations =
-    project.activeTransformations?.includes("e-retouch");
+    project.activeTransformations?.includes('e-retouch')
   const selectedPresetData = RETOUCH_PRESETS.find(
-    (p) => p.key === selectedPreset
-  );
+    (p) => p.key === selectedPreset,
+  )
 
   return (
     <div className="space-y-6">
@@ -191,16 +191,16 @@ export function AIEdit({ project }) {
         </h3>
         <div className="grid grid-cols-2 gap-3">
           {RETOUCH_PRESETS.map((preset) => {
-            const Icon = preset.icon;
-            const isSelected = selectedPreset === preset.key;
+            const Icon = preset.icon
+            const isSelected = selectedPreset === preset.key
 
             return (
               <div
                 key={preset.key}
                 className={`relative p-4 rounded-lg border cursor-pointer transition-all ${
                   isSelected
-                    ? "border-cyan-400 bg-cyan-400/10"
-                    : "border-white/20 bg-slate-700/30 hover:border-white/40"
+                    ? 'border-cyan-400 bg-cyan-400/10'
+                    : 'border-white/20 bg-slate-700/30 hover:border-white/40'
                 }`}
                 onClick={() => setSelectedPreset(preset.key)}
               >
@@ -225,7 +225,7 @@ export function AIEdit({ project }) {
                   </div>
                 )}
               </div>
-            );
+            )
           })}
         </div>
       </div>
@@ -261,5 +261,5 @@ export function AIEdit({ project }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

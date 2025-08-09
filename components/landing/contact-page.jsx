@@ -1,9 +1,9 @@
-'use client';
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '../ui/button';
+'use client'
+import React from 'react'
+import { motion } from 'framer-motion'
+import { Button } from '../ui/button'
 
-const Contact = () => {
+const ContactPage = () => {
   return (
     <motion.section
       id="contact"
@@ -39,7 +39,7 @@ const Contact = () => {
         </form>
       </div>
     </motion.section>
-  );
-};
+  )
+}
 
-export default Contact;
+export default ContactPage

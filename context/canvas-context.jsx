@@ -1,11 +1,11 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react'
 
-export const CanvasContext = createContext();
+export const CanvasContext = createContext()
 
 export const useCanvas = () => {
-  const context = useContext(CanvasContext);
+  const context = useContext(CanvasContext)
   if (!context) {
-    throw new Error("Error");
+    throw new Error('Error')
   }
-  return context;
-};
+  return context
+}

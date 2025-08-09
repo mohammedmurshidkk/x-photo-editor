@@ -1,182 +1,182 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect } from "react";
-import { Slider } from "@/components/ui/slider";
-import { Button } from "@/components/ui/button";
-import { RotateCcw } from "lucide-react";
-import { filters } from "fabric";
-import { useCanvas } from "@/context/canvas-context";
+import React, { useState, useEffect } from 'react'
+import { Slider } from '@/components/ui/slider'
+import { Button } from '@/components/ui/button'
+import { RotateCcw } from 'lucide-react'
+import { filters } from 'fabric'
+import { useCanvas } from '@/context/canvas-context'
 
 // Filter configurations
 const FILTER_CONFIGS = [
   {
-    key: "brightness",
-    label: "Brightness",
+    key: 'brightness',
+    label: 'Brightness',
     min: -100,
     max: 100,
     step: 1,
     defaultValue: 0,
     filterClass: filters.Brightness,
-    valueKey: "brightness",
+    valueKey: 'brightness',
     transform: (value) => value / 100,
   },
   {
-    key: "contrast",
-    label: "Contrast",
+    key: 'contrast',
+    label: 'Contrast',
     min: -100,
     max: 100,
     step: 1,
     defaultValue: 0,
     filterClass: filters.Contrast,
-    valueKey: "contrast",
+    valueKey: 'contrast',
     transform: (value) => value / 100,
   },
   {
-    key: "saturation",
-    label: "Saturation",
+    key: 'saturation',
+    label: 'Saturation',
     min: -100,
     max: 100,
     step: 1,
     defaultValue: 0,
     filterClass: filters.Saturation,
-    valueKey: "saturation",
+    valueKey: 'saturation',
     transform: (value) => value / 100,
   },
   {
-    key: "vibrance",
-    label: "Vibrance",
+    key: 'vibrance',
+    label: 'Vibrance',
     min: -100,
     max: 100,
     step: 1,
     defaultValue: 0,
     filterClass: filters.Vibrance,
-    valueKey: "vibrance",
+    valueKey: 'vibrance',
     transform: (value) => value / 100,
   },
   {
-    key: "blur",
-    label: "Blur",
+    key: 'blur',
+    label: 'Blur',
     min: 0,
     max: 100,
     step: 1,
     defaultValue: 0,
     filterClass: filters.Blur,
-    valueKey: "blur",
+    valueKey: 'blur',
     transform: (value) => value / 100,
   },
   {
-    key: "hue",
-    label: "Hue",
+    key: 'hue',
+    label: 'Hue',
     min: -180,
     max: 180,
     step: 1,
     defaultValue: 0,
     filterClass: filters.HueRotation,
-    valueKey: "rotation",
+    valueKey: 'rotation',
     transform: (value) => value * (Math.PI / 180),
-    suffix: "°",
+    suffix: '°',
   },
-];
+]
 
 // Default values object
 const DEFAULT_VALUES = FILTER_CONFIGS.reduce((acc, config) => {
-  acc[config.key] = config.defaultValue;
-  return acc;
-}, {});
+  acc[config.key] = config.defaultValue
+  return acc
+}, {})
 
 export function AdjustControls() {
-  const [filterValues, setFilterValues] = useState(DEFAULT_VALUES);
-  const [isApplying, setIsApplying] = useState(false);
-  const { canvasEditor } = useCanvas();
+  const [filterValues, setFilterValues] = useState(DEFAULT_VALUES)
+  const [isApplying, setIsApplying] = useState(false)
+  const { canvasEditor } = useCanvas()
 
   const getActiveImage = () => {
-    if (!canvasEditor) return null;
-    const activeObject = canvasEditor.getActiveObject();
-    if (activeObject && activeObject.type === "image") return activeObject;
-    const objects = canvasEditor.getObjects();
-    return objects.find((obj) => obj.type === "image") || null;
-  };
+    if (!canvasEditor) return null
+    const activeObject = canvasEditor.getActiveObject()
+    if (activeObject && activeObject.type === 'image') return activeObject
+    const objects = canvasEditor.getObjects()
+    return objects.find((obj) => obj.type === 'image') || null
+  }
 
   const applyFilters = async (newValues) => {
-    const imageObject = getActiveImage();
-    if (!imageObject || isApplying) return;
+    const imageObject = getActiveImage()
+    if (!imageObject || isApplying) return
 
-    setIsApplying(true);
+    setIsApplying(true)
 
     try {
-      const filtersToApply = [];
+      const filtersToApply = []
 
       FILTER_CONFIGS.forEach((config) => {
-        const value = newValues[config.key];
+        const value = newValues[config.key]
         if (value !== config.defaultValue) {
-          const transformedValue = config.transform(value);
+          const transformedValue = config.transform(value)
           filtersToApply.push(
             new config.filterClass({
               [config.valueKey]: transformedValue,
-            })
-          );
+            }),
+          )
         }
-      });
+      })
 
-      imageObject.filters = filtersToApply;
+      imageObject.filters = filtersToApply
 
       await new Promise((resolve) => {
-        imageObject.applyFilters();
-        canvasEditor.requestRenderAll();
-        setTimeout(resolve, 50);
-      });
+        imageObject.applyFilters()
+        canvasEditor.requestRenderAll()
+        setTimeout(resolve, 50)
+      })
     } catch (error) {
-      console.error("Error applying filters:", error);
+      console.error('Error applying filters:', error)
     } finally {
-      setIsApplying(false);
+      setIsApplying(false)
     }
-  };
+  }
 
   const handleValueChange = (filterKey, value) => {
     const newValues = {
       ...filterValues,
       [filterKey]: Array.isArray(value) ? value[0] : value,
-    };
-    setFilterValues(newValues);
-    applyFilters(newValues);
-  };
+    }
+    setFilterValues(newValues)
+    applyFilters(newValues)
+  }
 
   const resetFilters = () => {
-    setFilterValues(DEFAULT_VALUES);
-    applyFilters(DEFAULT_VALUES);
-  };
+    setFilterValues(DEFAULT_VALUES)
+    applyFilters(DEFAULT_VALUES)
+  }
 
   const extractFilterValues = (imageObject) => {
-    if (!imageObject?.filters?.length) return DEFAULT_VALUES;
+    if (!imageObject?.filters?.length) return DEFAULT_VALUES
 
-    const extractedValues = { ...DEFAULT_VALUES };
+    const extractedValues = { ...DEFAULT_VALUES }
 
     imageObject.filters.forEach((filter) => {
       const config = FILTER_CONFIGS.find(
-        (c) => c.filterClass.name === filter.constructor.name
-      );
+        (c) => c.filterClass.name === filter.constructor.name,
+      )
       if (config) {
-        const filterValue = filter[config.valueKey];
-        if (config.key === "hue") {
+        const filterValue = filter[config.valueKey]
+        if (config.key === 'hue') {
           extractedValues[config.key] = Math.round(
-            filterValue * (180 / Math.PI)
-          );
+            filterValue * (180 / Math.PI),
+          )
         } else {
-          extractedValues[config.key] = Math.round(filterValue * 100);
+          extractedValues[config.key] = Math.round(filterValue * 100)
         }
       }
-    });
+    })
 
-    return extractedValues;
-  };
+    return extractedValues
+  }
 
   useEffect(() => {
-    const imageObject = getActiveImage();
+    const imageObject = getActiveImage()
     if (imageObject?.filters) {
-      const existingValues = extractFilterValues(imageObject);
-      setFilterValues(existingValues);
+      const existingValues = extractFilterValues(imageObject)
+      setFilterValues(existingValues)
     }
-  }, [canvasEditor]);
+  }, [canvasEditor])
 
   if (!canvasEditor) {
     return (
@@ -185,10 +185,10 @@ export function AdjustControls() {
           Load an image to start adjusting
         </p>
       </div>
-    );
+    )
   }
 
-  const activeImage = getActiveImage();
+  const activeImage = getActiveImage()
   if (!activeImage) {
     return (
       <div className="p-4">
@@ -196,7 +196,7 @@ export function AdjustControls() {
           Select an image to adjust filters
         </p>
       </div>
-    );
+    )
   }
 
   return (
@@ -222,7 +222,7 @@ export function AdjustControls() {
             <label className="text-sm text-white">{config.label}</label>
             <span className="text-xs text-white/70">
               {filterValues[config.key]}
-              {config.suffix || ""}
+              {config.suffix || ''}
             </span>
           </div>
           <Slider
@@ -254,5 +254,5 @@ export function AdjustControls() {
         </div>
       )}
     </div>
-  );
+  )
 }

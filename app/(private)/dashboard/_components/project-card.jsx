@@ -1,36 +1,36 @@
-import { Edit, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { formatDistanceToNow } from "date-fns";
-import { useConvexMutation } from "@/hooks/use-convex-query";
-import { api } from "@/convex/_generated/api";
-import { toast } from "sonner";
+import { Edit, Trash2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { formatDistanceToNow } from 'date-fns'
+import { useConvexMutation } from '@/hooks/use-convex-query'
+import { api } from '@/convex/_generated/api'
+import { toast } from 'sonner'
 
 export default function ProjectCard({ project, onEdit }) {
   const { mutate: deleteProject, isLoading } = useConvexMutation(
-    api.projects.deleteProject
-  );
+    api.projects.deleteProject,
+  )
 
   const lastUpdated = formatDistanceToNow(new Date(project.updatedAt), {
     addSuffix: true,
-  });
+  })
 
   const handleDelete = async () => {
     const confirmed = confirm(
-      `Are you sure you want to delete "${project.title}"? This action cannot be undone.`
-    );
+      `Are you sure you want to delete "${project.title}"? This action cannot be undone.`,
+    )
 
     if (confirmed) {
       try {
-        await deleteProject({ projectId: project._id });
-        toast.success("Project deleted successfully");
+        await deleteProject({ projectId: project._id })
+        toast.success('Project deleted successfully')
       } catch (error) {
-        console.error("Error deleting project:", error);
-        toast.error("Failed to delete project. Please try again.");
+        console.error('Error deleting project:', error)
+        toast.error('Failed to delete project. Please try again.')
       }
     }
-  };
+  }
 
   return (
     <Card className="py-0 group relative bg-slate-800/50 overflow-hidden hover:border-white/20 transition-all hover:transform hover:scale-[1.02]">
@@ -80,5 +80,5 @@ export default function ProjectCard({ project, onEdit }) {
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

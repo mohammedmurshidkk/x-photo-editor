@@ -1,17 +1,24 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
 
-const PricingCard = ({ plan, price, features, featured, buttonText, delay }) => {
+const PricingCard = ({
+  plan,
+  price,
+  features,
+  featured,
+  buttonText,
+  delay,
+}) => {
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
-  });
+  })
 
   const variants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0 },
-  };
+  }
 
   return (
     <motion.div
@@ -30,13 +37,28 @@ const PricingCard = ({ plan, price, features, featured, buttonText, delay }) => 
       )}
       <h3 className="text-2xl font-bold text-white text-center mb-2">{plan}</h3>
       <p className="text-4xl font-bold text-center mb-6">
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400">${price}</span>
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400">
+          ${price}
+        </span>
         <span className="text-slate-400 text-sm">/mo</span>
       </p>
       <ul className="space-y-4 text-slate-300 mb-8 flex-grow">
         {features.map((feature, index) => (
           <li key={index} className="flex items-center">
-            <svg className="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+            <svg
+              className="w-5 h-5 text-green-400 mr-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
             {feature}
           </li>
         ))}
@@ -48,7 +70,7 @@ const PricingCard = ({ plan, price, features, featured, buttonText, delay }) => 
         {buttonText}
       </a>
     </motion.div>
-  );
-};
+  )
+}
 
-export default PricingCard;
+export default PricingCard

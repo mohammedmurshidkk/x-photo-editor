@@ -1,5 +1,5 @@
-import Header from '@/components/header';
-import LandingPage from '@/components/landing/landing-page';
+import Header from '@/components/header'
+import LandingPage from '@/components/landing/landing-page'
 
 export default function Home() {
   return (
@@ -7,5 +7,5 @@ export default function Home() {
       <Header />
       <LandingPage />
     </>
-  );
+  )
 }

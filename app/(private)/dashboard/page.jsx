@@ -1,24 +1,24 @@
-'use client';
+'use client'
 
-import { Button } from '@/components/ui/button';
-import { api } from '@/convex/_generated/api';
-import { useConvexQuery } from '@/hooks/use-convex-query';
-import { Image, Plus, Sparkles, ArrowLeft } from 'lucide-react';
-import React, { useState } from 'react';
-import { ProjectGrid } from './_components/project-grid';
-import { NewProjectModal } from './_components/new-project-modal';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { Button } from '@/components/ui/button'
+import { api } from '@/convex/_generated/api'
+import { useConvexQuery } from '@/hooks/use-convex-query'
+import { Image, Plus, Sparkles, ArrowLeft } from 'lucide-react'
+import React, { useState } from 'react'
+import { ProjectGrid } from './_components/project-grid'
+import { NewProjectModal } from './_components/new-project-modal'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 const DashboardPage = () => {
-  const [showNewProjectModal, setShowNewProjectModal] = useState(false);
-  const router = useRouter();
+  const [showNewProjectModal, setShowNewProjectModal] = useState(false)
+  const router = useRouter()
 
   const {
     data: projects,
     error,
     isLoading,
-  } = useConvexQuery(api.projects.getUserProjects);
+  } = useConvexQuery(api.projects.getUserProjects)
 
   return (
     <div className="min-h-screen pt-32 pb-16 relative">
@@ -73,10 +73,10 @@ const DashboardPage = () => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DashboardPage;
+export default DashboardPage
 
 // Empty state when user has no projects
 function EmptyState({ onCreateProject }) {
@@ -105,5 +105,5 @@ function EmptyState({ onCreateProject }) {
         Start Creating
       </Button>
     </div>
-  );
+  )
 }

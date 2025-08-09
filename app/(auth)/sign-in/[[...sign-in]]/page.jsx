@@ -1,15 +1,17 @@
-import { SignIn } from '@clerk/nextjs';
-import React from 'react';
-import { clerkTheme } from '@/app/clerk-theme';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
+import { SignIn } from '@clerk/nextjs'
+import React from 'react'
+import { clerkTheme } from '@/app/clerk-theme'
+import { Button } from '@/components/ui/button'
+import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
 
 export const metadata = {
   title: 'X-Photo Editor | Sign In',
-  description: 'Sign in to your X-Photo Editor account to access your AI-powered image editing projects. Secure authentication powered by Clerk.',
-  keywords: 'sign in, login, authentication, Clerk, AI photo editor, image editing, Next.js',
-};
+  description:
+    'Sign in to your X-Photo Editor account to access your AI-powered image editing projects. Secure authentication powered by Clerk.',
+  keywords:
+    'sign in, login, authentication, Clerk, AI photo editor, image editing, Next.js',
+}
 
 const SignInPage = () => {
   return (
@@ -22,7 +24,7 @@ const SignInPage = () => {
       </Button>
       <SignIn appearance={clerkTheme} />
     </div>
-  );
-};
+  )
+}
 
-export default SignInPage;
+export default SignInPage

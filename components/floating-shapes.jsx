@@ -1,10 +1,10 @@
-'use client';
+'use client'
 
-import useParallax from '@/hooks/use-parallax';
-import React from 'react';
+import useParallax from '@/hooks/use-parallax'
+import React from 'react'
 
 const FloatingShapes = () => {
-  const scrollY = useParallax();
+  const scrollY = useParallax()
 
   const shapes = [
     {
@@ -31,7 +31,7 @@ const FloatingShapes = () => {
       position: 'bottom-1/3 right-1/4',
       gradient: 'from-green-400 to-cyan-500',
     },
-  ];
+  ]
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -47,7 +47,7 @@ const FloatingShapes = () => {
         />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default FloatingShapes;
+export default FloatingShapes

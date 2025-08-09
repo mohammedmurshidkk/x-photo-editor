@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react'
 import {
   ArrowLeft,
   RotateCcw,
@@ -19,395 +19,395 @@ import {
   Download,
   FileImage,
   Lock,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+} from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
-import { usePlanAccess } from "@/hooks/use-plan-access";
-import { UpgradeModal } from "@/components/upgrade-modal";
-import { FabricImage } from "fabric";
-import { api } from "@/convex/_generated/api";
-import { useConvexMutation, useConvexQuery } from "@/hooks/use-convex-query";
-import { toast } from "sonner";
-import { useCanvas } from "@/context/canvas-context";
+} from '@/components/ui/dropdown-menu'
+import { useRouter } from 'next/navigation'
+import { usePlanAccess } from '@/hooks/use-plan-access'
+import { UpgradeModal } from '@/components/upgrade-modal'
+import { FabricImage } from 'fabric'
+import { api } from '@/convex/_generated/api'
+import { useConvexMutation, useConvexQuery } from '@/hooks/use-convex-query'
+import { toast } from 'sonner'
+import { useCanvas } from '@/context/canvas-context'
 
 const TOOLS = [
   {
-    id: "resize",
-    label: "Resize",
+    id: 'resize',
+    label: 'Resize',
     icon: Expand,
     isActive: true,
   },
   {
-    id: "crop",
-    label: "Crop",
+    id: 'crop',
+    label: 'Crop',
     icon: Crop,
   },
   {
-    id: "adjust",
-    label: "Adjust",
+    id: 'adjust',
+    label: 'Adjust',
     icon: Sliders,
   },
   {
-    id: "text",
-    label: "Text",
+    id: 'text',
+    label: 'Text',
     icon: Text,
   },
   {
-    id: "background",
-    label: "AI Background",
+    id: 'background',
+    label: 'AI Background',
     icon: Palette,
     proOnly: true,
   },
   {
-    id: "ai_extender",
-    label: "AI Image Extender",
+    id: 'ai_extender',
+    label: 'AI Image Extender',
     icon: Maximize2,
     proOnly: true,
   },
   {
-    id: "ai_edit",
-    label: "AI Editing",
+    id: 'ai_edit',
+    label: 'AI Editing',
     icon: Eye,
     proOnly: true,
   },
-];
+]
 
 const EXPORT_FORMATS = [
   {
-    format: "PNG",
+    format: 'PNG',
     quality: 1.0,
-    label: "PNG (High Quality)",
-    extension: "png",
+    label: 'PNG (High Quality)',
+    extension: 'png',
   },
   {
-    format: "JPEG",
+    format: 'JPEG',
     quality: 0.9,
-    label: "JPEG (90% Quality)",
-    extension: "jpg",
+    label: 'JPEG (90% Quality)',
+    extension: 'jpg',
   },
   {
-    format: "JPEG",
+    format: 'JPEG',
     quality: 0.8,
-    label: "JPEG (80% Quality)",
-    extension: "jpg",
+    label: 'JPEG (80% Quality)',
+    extension: 'jpg',
   },
   {
-    format: "WEBP",
+    format: 'WEBP',
     quality: 0.9,
-    label: "WebP (90% Quality)",
-    extension: "webp",
+    label: 'WebP (90% Quality)',
+    extension: 'webp',
   },
-];
+]
 
 export function EditorTopBar({ project }) {
-  const router = useRouter();
-  const [isExporting, setIsExporting] = useState(false);
-  const [exportFormat, setExportFormat] = useState(null);
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
-  const [restrictedTool, setRestrictedTool] = useState(null);
+  const router = useRouter()
+  const [isExporting, setIsExporting] = useState(false)
+  const [exportFormat, setExportFormat] = useState(null)
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [restrictedTool, setRestrictedTool] = useState(null)
 
   // Undo/Redo state
-  const [undoStack, setUndoStack] = useState([]);
-  const [redoStack, setRedoStack] = useState([]);
-  const [isUndoRedoOperation, setIsUndoRedoOperation] = useState(false);
+  const [undoStack, setUndoStack] = useState([])
+  const [redoStack, setRedoStack] = useState([])
+  const [isUndoRedoOperation, setIsUndoRedoOperation] = useState(false)
 
-  const { activeTool, onToolChange, canvasEditor } = useCanvas();
-  const { hasAccess, canExport, isFree } = usePlanAccess();
+  const { activeTool, onToolChange, canvasEditor } = useCanvas()
+  const { hasAccess, canExport, isFree } = usePlanAccess()
 
   // Use the loading states from the hooks
   const { mutate: updateProject, isLoading: isSaving } = useConvexMutation(
-    api.projects.updateProject
-  );
-  const { data: user } = useConvexQuery(api.users.getCurrentUser);
+    api.projects.updateProject,
+  )
+  const { data: user } = useConvexQuery(api.users.getCurrentUser)
 
   // Save canvas state to undo stack
   const saveToUndoStack = () => {
-    if (!canvasEditor || isUndoRedoOperation) return;
+    if (!canvasEditor || isUndoRedoOperation) return
 
-    const canvasState = JSON.stringify(canvasEditor.toJSON());
+    const canvasState = JSON.stringify(canvasEditor.toJSON())
 
     setUndoStack((prev) => {
-      const newStack = [...prev, canvasState];
+      const newStack = [...prev, canvasState]
       // Limit undo stack to 20 items to prevent memory issues
       if (newStack.length > 20) {
-        newStack.shift();
+        newStack.shift()
       }
-      return newStack;
-    });
+      return newStack
+    })
 
     // Clear redo stack when new action is performed
-    setRedoStack([]);
-  };
+    setRedoStack([])
+  }
 
   // Setup undo/redo listeners
   useEffect(() => {
-    if (!canvasEditor) return;
+    if (!canvasEditor) return
 
     // Save initial state
     setTimeout(() => {
       if (canvasEditor && !isUndoRedoOperation) {
-        const initialState = JSON.stringify(canvasEditor.toJSON());
-        setUndoStack([initialState]);
+        const initialState = JSON.stringify(canvasEditor.toJSON())
+        setUndoStack([initialState])
       }
-    }, 1000);
+    }, 1000)
 
     const handleCanvasModified = () => {
       if (!isUndoRedoOperation) {
         // Debounce state saving to avoid too many saves
         setTimeout(() => {
           if (!isUndoRedoOperation) {
-            saveToUndoStack();
+            saveToUndoStack()
           }
-        }, 500);
+        }, 500)
       }
-    };
+    }
 
     // Listen to canvas events that should trigger state save
-    canvasEditor.on("object:modified", handleCanvasModified);
-    canvasEditor.on("object:added", handleCanvasModified);
-    canvasEditor.on("object:removed", handleCanvasModified);
-    canvasEditor.on("path:created", handleCanvasModified);
+    canvasEditor.on('object:modified', handleCanvasModified)
+    canvasEditor.on('object:added', handleCanvasModified)
+    canvasEditor.on('object:removed', handleCanvasModified)
+    canvasEditor.on('path:created', handleCanvasModified)
 
     return () => {
-      canvasEditor.off("object:modified", handleCanvasModified);
-      canvasEditor.off("object:added", handleCanvasModified);
-      canvasEditor.off("object:removed", handleCanvasModified);
-      canvasEditor.off("path:created", handleCanvasModified);
-    };
-  }, [canvasEditor, isUndoRedoOperation]);
+      canvasEditor.off('object:modified', handleCanvasModified)
+      canvasEditor.off('object:added', handleCanvasModified)
+      canvasEditor.off('object:removed', handleCanvasModified)
+      canvasEditor.off('path:created', handleCanvasModified)
+    }
+  }, [canvasEditor, isUndoRedoOperation])
 
   // Undo function
   const handleUndo = async () => {
-    if (!canvasEditor || undoStack.length <= 1) return;
+    if (!canvasEditor || undoStack.length <= 1) return
 
-    setIsUndoRedoOperation(true);
+    setIsUndoRedoOperation(true)
 
     try {
       // Move current state to redo stack
-      const currentState = JSON.stringify(canvasEditor.toJSON());
-      setRedoStack((prev) => [...prev, currentState]);
+      const currentState = JSON.stringify(canvasEditor.toJSON())
+      setRedoStack((prev) => [...prev, currentState])
 
       // Remove last state from undo stack and apply the previous one
-      const newUndoStack = [...undoStack];
-      newUndoStack.pop(); // Remove current state
-      const previousState = newUndoStack[newUndoStack.length - 1];
+      const newUndoStack = [...undoStack]
+      newUndoStack.pop() // Remove current state
+      const previousState = newUndoStack[newUndoStack.length - 1]
 
       if (previousState) {
-        await canvasEditor.loadFromJSON(JSON.parse(previousState));
-        canvasEditor.requestRenderAll();
-        setUndoStack(newUndoStack);
-        toast.success("Undid last action");
+        await canvasEditor.loadFromJSON(JSON.parse(previousState))
+        canvasEditor.requestRenderAll()
+        setUndoStack(newUndoStack)
+        toast.success('Undid last action')
       }
     } catch (error) {
-      console.error("Error during undo:", error);
-      toast.error("Failed to undo action");
+      console.error('Error during undo:', error)
+      toast.error('Failed to undo action')
     } finally {
-      setTimeout(() => setIsUndoRedoOperation(false), 100);
+      setTimeout(() => setIsUndoRedoOperation(false), 100)
     }
-  };
+  }
 
   // Redo function
   const handleRedo = async () => {
-    if (!canvasEditor || redoStack.length === 0) return;
+    if (!canvasEditor || redoStack.length === 0) return
 
-    setIsUndoRedoOperation(true);
+    setIsUndoRedoOperation(true)
 
     try {
       // Get the latest state from redo stack
-      const newRedoStack = [...redoStack];
-      const nextState = newRedoStack.pop();
+      const newRedoStack = [...redoStack]
+      const nextState = newRedoStack.pop()
 
       if (nextState) {
         // Save current state to undo stack
-        const currentState = JSON.stringify(canvasEditor.toJSON());
-        setUndoStack((prev) => [...prev, currentState]);
+        const currentState = JSON.stringify(canvasEditor.toJSON())
+        setUndoStack((prev) => [...prev, currentState])
 
         // Apply the redo state
-        await canvasEditor.loadFromJSON(JSON.parse(nextState));
-        canvasEditor.requestRenderAll();
-        setRedoStack(newRedoStack);
-        toast.success("Redid last action");
+        await canvasEditor.loadFromJSON(JSON.parse(nextState))
+        canvasEditor.requestRenderAll()
+        setRedoStack(newRedoStack)
+        toast.success('Redid last action')
       }
     } catch (error) {
-      console.error("Error during redo:", error);
-      toast.error("Failed to redo action");
+      console.error('Error during redo:', error)
+      toast.error('Failed to redo action')
     } finally {
-      setTimeout(() => setIsUndoRedoOperation(false), 100);
+      setTimeout(() => setIsUndoRedoOperation(false), 100)
     }
-  };
+  }
 
   const handleBackToDashboard = () => {
-    router.push("/dashboard");
-  };
+    router.push('/dashboard')
+  }
 
   // Handle tool change with access control
   const handleToolChange = (toolId) => {
     if (!hasAccess(toolId)) {
-      setRestrictedTool(toolId);
-      setShowUpgradeModal(true);
-      return;
+      setRestrictedTool(toolId)
+      setShowUpgradeModal(true)
+      return
     }
-    onToolChange(toolId);
-  };
+    onToolChange(toolId)
+  }
 
   // Manual save functionality
   const handleManualSave = async () => {
     if (!canvasEditor || !project) {
-      toast.error("Canvas not ready for saving");
-      return;
+      toast.error('Canvas not ready for saving')
+      return
     }
 
     try {
-      const canvasJSON = canvasEditor.toJSON();
+      const canvasJSON = canvasEditor.toJSON()
       await updateProject({
         projectId: project._id,
         canvasState: canvasJSON,
-      });
-      toast.success("Project saved successfully!");
+      })
+      toast.success('Project saved successfully!')
     } catch (error) {
-      console.error("Error saving project:", error);
-      toast.error("Failed to save project. Please try again.");
+      console.error('Error saving project:', error)
+      toast.error('Failed to save project. Please try again.')
     }
-  };
+  }
 
   // Export canvas as image
   const handleExport = async (exportConfig) => {
     if (!canvasEditor || !project) {
-      toast.error("Canvas not ready for export");
-      return;
+      toast.error('Canvas not ready for export')
+      return
     }
 
     // Check export limits for free users
     if (!canExport(user?.exportsThisMonth || 0)) {
-      setRestrictedTool("export");
-      setShowUpgradeModal(true);
-      return;
+      setRestrictedTool('export')
+      setShowUpgradeModal(true)
+      return
     }
 
-    setIsExporting(true);
-    setExportFormat(exportConfig.format);
+    setIsExporting(true)
+    setExportFormat(exportConfig.format)
 
     try {
       // Store current canvas state for restoration
-      const currentZoom = canvasEditor.getZoom();
-      const currentViewportTransform = [...canvasEditor.viewportTransform];
+      const currentZoom = canvasEditor.getZoom()
+      const currentViewportTransform = [...canvasEditor.viewportTransform]
 
       // Reset zoom and viewport for accurate export
-      canvasEditor.setZoom(1);
-      canvasEditor.setViewportTransform([1, 0, 0, 1, 0, 0]);
+      canvasEditor.setZoom(1)
+      canvasEditor.setViewportTransform([1, 0, 0, 1, 0, 0])
       canvasEditor.setDimensions({
         width: project.width,
         height: project.height,
-      });
-      canvasEditor.requestRenderAll();
+      })
+      canvasEditor.requestRenderAll()
 
       // Export the canvas
       const dataURL = canvasEditor.toDataURL({
         format: exportConfig.format.toLowerCase(),
         quality: exportConfig.quality,
         multiplier: 1,
-      });
+      })
 
       // Restore original canvas state
-      canvasEditor.setZoom(currentZoom);
-      canvasEditor.setViewportTransform(currentViewportTransform);
+      canvasEditor.setZoom(currentZoom)
+      canvasEditor.setViewportTransform(currentViewportTransform)
       canvasEditor.setDimensions({
         width: project.width * currentZoom,
         height: project.height * currentZoom,
-      });
-      canvasEditor.requestRenderAll();
+      })
+      canvasEditor.requestRenderAll()
 
       // Download the image
-      const link = document.createElement("a");
-      link.download = `${project.title}.${exportConfig.extension}`;
-      link.href = dataURL;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const link = document.createElement('a')
+      link.download = `${project.title}.${exportConfig.extension}`
+      link.href = dataURL
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
 
-      toast.success(`Image exported as ${exportConfig.format}!`);
+      toast.success(`Image exported as ${exportConfig.format}!`)
     } catch (error) {
-      console.error("Error exporting image:", error);
-      toast.error("Failed to export image. Please try again.");
+      console.error('Error exporting image:', error)
+      toast.error('Failed to export image. Please try again.')
     } finally {
-      setIsExporting(false);
-      setExportFormat(null);
+      setIsExporting(false)
+      setExportFormat(null)
     }
-  };
+  }
 
   // Reset canvas to original state
   const handleResetToOriginal = async () => {
     if (!canvasEditor || !project || !project.originalImageUrl) {
-      toast.error("No original image found to reset to");
-      return;
+      toast.error('No original image found to reset to')
+      return
     }
 
     // Save state before reset for undo
-    saveToUndoStack();
+    saveToUndoStack()
 
     try {
       // Clear canvas and reset state
-      canvasEditor.clear();
-      canvasEditor.backgroundColor = "#ffffff";
-      canvasEditor.backgroundImage = null;
+      canvasEditor.clear()
+      canvasEditor.backgroundColor = '#ffffff'
+      canvasEditor.backgroundImage = null
 
       // Load original image
       const fabricImage = await FabricImage.fromURL(project.originalImageUrl, {
-        crossOrigin: "anonymous",
-      });
+        crossOrigin: 'anonymous',
+      })
 
       // Calculate proper scaling
-      const imgAspectRatio = fabricImage.width / fabricImage.height;
-      const canvasAspectRatio = project.width / project.height;
+      const imgAspectRatio = fabricImage.width / fabricImage.height
+      const canvasAspectRatio = project.width / project.height
       const scale =
         imgAspectRatio > canvasAspectRatio
           ? project.width / fabricImage.width
-          : project.height / fabricImage.height;
+          : project.height / fabricImage.height
 
       fabricImage.set({
         left: project.width / 2,
         top: project.height / 2,
-        originX: "center",
-        originY: "center",
+        originX: 'center',
+        originY: 'center',
         scaleX: scale,
         scaleY: scale,
         selectable: true,
         evented: true,
-      });
+      })
 
-      fabricImage.filters = [];
-      canvasEditor.add(fabricImage);
-      canvasEditor.centerObject(fabricImage);
-      canvasEditor.setActiveObject(fabricImage);
-      canvasEditor.requestRenderAll();
+      fabricImage.filters = []
+      canvasEditor.add(fabricImage)
+      canvasEditor.centerObject(fabricImage)
+      canvasEditor.setActiveObject(fabricImage)
+      canvasEditor.requestRenderAll()
 
       // Save the reset state
-      const canvasJSON = canvasEditor.toJSON();
+      const canvasJSON = canvasEditor.toJSON()
       await updateProject({
         projectId: project._id,
         canvasState: canvasJSON,
         currentImageUrl: project.originalImageUrl,
         activeTransformations: undefined,
         backgroundRemoved: false,
-      });
+      })
 
-      toast.success("Canvas reset to original image");
+      toast.success('Canvas reset to original image')
     } catch (error) {
-      console.error("Error resetting canvas:", error);
-      toast.error("Failed to reset canvas. Please try again.");
+      console.error('Error resetting canvas:', error)
+      toast.error('Failed to reset canvas. Please try again.')
     }
-  };
+  }
 
   // Check if undo/redo is available
-  const canUndo = undoStack.length > 1;
-  const canRedo = redoStack.length > 0;
+  const canUndo = undoStack.length > 1
+  const canRedo = redoStack.length > 0
 
   return (
     <>
@@ -548,21 +548,21 @@ export function EditorTopBar({ project }) {
           {/* Tools */}
           <div className="flex items-center gap-2">
             {TOOLS.map((tool) => {
-              const Icon = tool.icon;
-              const isActive = activeTool === tool.id;
-              const hasToolAccess = hasAccess(tool.id);
+              const Icon = tool.icon
+              const isActive = activeTool === tool.id
+              const hasToolAccess = hasAccess(tool.id)
 
               return (
                 <Button
                   key={tool.id}
-                  variant={isActive ? "default" : "ghost"}
+                  variant={isActive ? 'default' : 'ghost'}
                   size="sm"
                   onClick={() => handleToolChange(tool.id)}
                   className={`gap-2 relative ${
                     isActive
-                      ? "bg-blue-600 text-white hover:bg-blue-700"
-                      : "text-white hover:text-gray-300 hover:bg-gray-100"
-                  } ${!hasToolAccess ? "opacity-60" : ""}`}
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'text-white hover:text-gray-300 hover:bg-gray-100'
+                  } ${!hasToolAccess ? 'opacity-60' : ''}`}
                 >
                   <Icon className="h-4 w-4" />
                   {tool.label}
@@ -570,7 +570,7 @@ export function EditorTopBar({ project }) {
                     <Lock className="h-3 w-3 text-amber-400" />
                   )}
                 </Button>
-              );
+              )
             })}
           </div>
 
@@ -581,7 +581,7 @@ export function EditorTopBar({ project }) {
               <Button
                 variant="ghost"
                 size="sm"
-                className={`text-white ${!canUndo ? "opacity-50 cursor-not-allowed" : "hover:bg-slate-700"}`}
+                className={`text-white ${!canUndo ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-700'}`}
                 onClick={handleUndo}
                 disabled={!canUndo || isUndoRedoOperation}
                 title={`Undo (${undoStack.length - 1} actions available)`}
@@ -591,7 +591,7 @@ export function EditorTopBar({ project }) {
               <Button
                 variant="ghost"
                 size="sm"
-                className={`text-white ${!canRedo ? "opacity-50 cursor-not-allowed" : "hover:bg-slate-700"}`}
+                className={`text-white ${!canRedo ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-700'}`}
                 onClick={handleRedo}
                 disabled={!canRedo || isUndoRedoOperation}
                 title={`Redo (${redoStack.length} actions available)`}
@@ -607,16 +607,16 @@ export function EditorTopBar({ project }) {
       <UpgradeModal
         isOpen={showUpgradeModal}
         onClose={() => {
-          setShowUpgradeModal(false);
-          setRestrictedTool(null);
+          setShowUpgradeModal(false)
+          setRestrictedTool(null)
         }}
         restrictedTool={restrictedTool}
         reason={
-          restrictedTool === "export"
-            ? "Free plan is limited to 20 exports per month. Upgrade to Pro for unlimited exports."
+          restrictedTool === 'export'
+            ? 'Free plan is limited to 20 exports per month. Upgrade to Pro for unlimited exports.'
             : undefined
         }
       />
     </>
-  );
+  )
 }

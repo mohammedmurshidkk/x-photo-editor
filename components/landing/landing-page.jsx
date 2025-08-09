@@ -1,11 +1,11 @@
-'use client';
+'use client'
 
-import React from 'react';
-import CustomCursor from './custom-cursor';
-import FloatingShapes from './floating-shapes';
-import HeroSection from './hero-section';
-import FeatureCard from './feature-card';
-import InteractiveStats from './interactive-stats';
+import React from 'react'
+import CustomCursor from './custom-cursor'
+import FloatingShapes from './floating-shapes'
+import HeroSection from './hero-section'
+import FeatureCard from './feature-card'
+import InteractiveStats from './interactive-stats'
 
 const features = [
   {
@@ -29,10 +29,10 @@ const features = [
       'Transform your photos into works of art by applying the styles of famous painters or custom artistic filters.',
     delay: 0.3,
   },
-];
+]
 
-import Contact from './contact';
-import Pricing from '../pricing';
+import Contact from './contact-page'
+import Pricing from '../pricing'
 
 const LandingPage = () => {
   return (
@@ -58,7 +58,7 @@ const LandingPage = () => {
         <Contact />
       </main>
     </div>
-  );
-};
+  )
+}
 
-export default LandingPage;
+export default LandingPage

@@ -1,17 +1,17 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
 
 const FeatureCard = ({ icon, title, description, delay }) => {
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
-  });
+  })
 
   const variants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0 },
-  };
+  }
 
   return (
     <motion.div
@@ -27,7 +27,7 @@ const FeatureCard = ({ icon, title, description, delay }) => {
       <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
       <p className="text-slate-400">{description}</p>
     </motion.div>
-  );
-};
+  )
+}
 
-export default FeatureCard;
+export default FeatureCard

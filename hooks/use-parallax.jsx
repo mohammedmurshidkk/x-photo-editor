@@ -1,19 +1,19 @@
-const { useState, useEffect } = require('react');
+const { useState, useEffect } = require('react')
 
 const useParallax = () => {
-  const [scrollY, setScrollY] = useState(0);
+  const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    const handleScroll = () => setScrollY(window.scrollY)
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll)
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return scrollY
-};
+}
 
-export default useParallax;
+export default useParallax

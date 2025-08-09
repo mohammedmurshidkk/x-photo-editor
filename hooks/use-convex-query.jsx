@@ -1,59 +1,59 @@
-import { useMutation, useQuery } from 'convex/react';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { useMutation, useQuery } from 'convex/react'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 export const useConvexQuery = (query, ...args) => {
-  const result = useQuery(query, ...args);
+  const result = useQuery(query, ...args)
 
-  const [data, setData] = useState(undefined);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [data, setData] = useState(undefined)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     if (result === undefined) {
-      setIsLoading(true);
+      setIsLoading(true)
     } else {
       try {
-        setData(result);
-        setError(null);
+        setData(result)
+        setError(null)
       } catch (err) {
-        setError(err);
-        toast.error(err?.message);
+        setError(err)
+        toast.error(err?.message)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }
-  }, [result]);
+  }, [result])
 
   return {
     data,
     isLoading,
     error,
-  };
-};
+  }
+}
 
 export const useConvexMutation = (mutation) => {
-  const mutationFn = useMutation(mutation);
-  const [data, setData] = useState(undefined);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const mutationFn = useMutation(mutation)
+  const [data, setData] = useState(undefined)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const mutate = async (...args) => {
-    setIsLoading(true);
-    setError(null);
+    setIsLoading(true)
+    setError(null)
 
     try {
-      const response = await mutationFn(...args);
-      setData(response);
-      return response;
+      const response = await mutationFn(...args)
+      setData(response)
+      return response
     } catch (err) {
-      setError(err);
-      toast.error(err.message);
-      throw err;
+      setError(err)
+      toast.error(err.message)
+      throw err
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
-  return { mutate, data, isLoading, error };
-};
+  return { mutate, data, isLoading, error }
+}

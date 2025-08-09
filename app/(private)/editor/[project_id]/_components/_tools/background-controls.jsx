@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import React, { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   Trash2,
   Palette,
@@ -12,51 +12,51 @@ import {
   Download,
   Loader2,
   Check,
-} from "lucide-react";
-import { HexColorPicker } from "react-colorful";
-import { FabricImage } from "fabric";
-import { useCanvas } from "@/context/canvas-context";
+} from 'lucide-react'
+import { HexColorPicker } from 'react-colorful'
+import { FabricImage } from 'fabric'
+import { useCanvas } from '@/context/canvas-context'
 
 // Unsplash API configuration
-const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
-const UNSPLASH_API_URL = "https://api.unsplash.com";
+const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY
+const UNSPLASH_API_URL = 'https://api.unsplash.com'
 
 export function BackgroundControls({ project }) {
-  const { canvasEditor, processingMessage, setProcessingMessage } = useCanvas();
-  const [backgroundColor, setBackgroundColor] = useState("#ffffff");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [unsplashImages, setUnsplashImages] = useState(null);
-  const [isSearching, setIsSearching] = useState(false);
-  const [selectedImageId, setSelectedImageId] = useState(null);
+  const { canvasEditor, processingMessage, setProcessingMessage } = useCanvas()
+  const [backgroundColor, setBackgroundColor] = useState('#ffffff')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [unsplashImages, setUnsplashImages] = useState(null)
+  const [isSearching, setIsSearching] = useState(false)
+  const [selectedImageId, setSelectedImageId] = useState(null)
 
   // Get the main image object from canvas
   const getMainImage = () => {
-    if (!canvasEditor) return null;
-    const objects = canvasEditor.getObjects();
-    return objects.find((obj) => obj.type === "image") || null;
-  };
+    if (!canvasEditor) return null
+    const objects = canvasEditor.getObjects()
+    return objects.find((obj) => obj.type === 'image') || null
+  }
 
   // Background removal using ImageKit
   const handleBackgroundRemoval = async () => {
-    const mainImage = getMainImage();
-    if (!mainImage || !project) return;
+    const mainImage = getMainImage()
+    if (!mainImage || !project) return
 
-    setProcessingMessage("Removing background with AI...");
+    setProcessingMessage('Removing background with AI...')
 
     try {
       // Get the current image URL
       const currentImageUrl =
-        project.currentImageUrl || project.originalImageUrl;
+        project.currentImageUrl || project.originalImageUrl
 
       // Create ImageKit transformation URL for background removal
-      const bgRemovedUrl = currentImageUrl.includes("ik.imagekit.io")
-        ? `${currentImageUrl.split("?")[0]}?tr=e-bgremove`
-        : currentImageUrl;
+      const bgRemovedUrl = currentImageUrl.includes('ik.imagekit.io')
+        ? `${currentImageUrl.split('?')[0]}?tr=e-bgremove`
+        : currentImageUrl
 
       // Create new image with background removed
       const processedImage = await FabricImage.fromURL(bgRemovedUrl, {
-        crossOrigin: "anonymous",
-      });
+        crossOrigin: 'anonymous',
+      })
 
       // Store the current properties before removing the old image
       const currentProps = {
@@ -67,54 +67,54 @@ export function BackgroundControls({ project }) {
         angle: mainImage.angle,
         originX: mainImage.originX,
         originY: mainImage.originY,
-      };
+      }
 
       // Remove the old image and add the new one
-      canvasEditor.remove(mainImage);
-      processedImage.set(currentProps);
-      canvasEditor.add(processedImage);
+      canvasEditor.remove(mainImage)
+      processedImage.set(currentProps)
+      canvasEditor.add(processedImage)
 
       // IMPORTANT: Update coordinates after replacing the image
-      processedImage.setCoords();
+      processedImage.setCoords()
 
       // Set as active object and recalculate canvas offset
-      canvasEditor.setActiveObject(processedImage);
-      canvasEditor.calcOffset();
-      canvasEditor.requestRenderAll();
+      canvasEditor.setActiveObject(processedImage)
+      canvasEditor.calcOffset()
+      canvasEditor.requestRenderAll()
 
-      console.log("Background removed successfully");
+      console.log('Background removed successfully')
     } catch (error) {
-      console.error("Error removing background:", error);
-      alert("Failed to remove background. Please try again.");
+      console.error('Error removing background:', error)
+      alert('Failed to remove background. Please try again.')
     } finally {
-      setProcessingMessage(null);
+      setProcessingMessage(null)
     }
-  };
+  }
 
   // Set canvas background color
   const handleColorBackground = () => {
-    if (!canvasEditor) return;
+    if (!canvasEditor) return
 
     // In Fabric.js 6.7, set property directly and render
-    canvasEditor.backgroundColor = backgroundColor;
-    canvasEditor.requestRenderAll();
-  };
+    canvasEditor.backgroundColor = backgroundColor
+    canvasEditor.requestRenderAll()
+  }
 
   // Remove canvas background (both color and image)
   const handleRemoveBackground = () => {
-    if (!canvasEditor) return;
+    if (!canvasEditor) return
 
     // Clear both background color and image
-    canvasEditor.backgroundColor = null;
-    canvasEditor.backgroundImage = null;
-    canvasEditor.requestRenderAll();
-  };
+    canvasEditor.backgroundColor = null
+    canvasEditor.backgroundImage = null
+    canvasEditor.requestRenderAll()
+  }
 
   // Search Unsplash images
   const searchUnsplashImages = async () => {
-    if (!searchQuery.trim() || !UNSPLASH_ACCESS_KEY) return;
+    if (!searchQuery.trim() || !UNSPLASH_ACCESS_KEY) return
 
-    setIsSearching(true);
+    setIsSearching(true)
     try {
       const response = await fetch(
         `${UNSPLASH_API_URL}/search/photos?query=${encodeURIComponent(searchQuery)}&per_page=12`,
@@ -122,26 +122,26 @@ export function BackgroundControls({ project }) {
           headers: {
             Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
           },
-        }
-      );
+        },
+      )
 
-      if (!response.ok) throw new Error("Failed to search images");
+      if (!response.ok) throw new Error('Failed to search images')
 
-      const data = await response.json();
-      setUnsplashImages(data.results || []);
+      const data = await response.json()
+      setUnsplashImages(data.results || [])
     } catch (error) {
-      console.error("Error searching Unsplash:", error);
-      alert("Failed to search images. Please try again.");
+      console.error('Error searching Unsplash:', error)
+      alert('Failed to search images. Please try again.')
     } finally {
-      setIsSearching(false);
+      setIsSearching(false)
     }
-  };
+  }
 
   // Set image as canvas background
   const handleImageBackground = async (imageUrl, imageId) => {
-    if (!canvasEditor) return;
+    if (!canvasEditor) return
 
-    setSelectedImageId(imageId);
+    setSelectedImageId(imageId)
     try {
       // Download and trigger Unsplash download endpoint (required by Unsplash API)
       if (UNSPLASH_ACCESS_KEY) {
@@ -149,65 +149,65 @@ export function BackgroundControls({ project }) {
           headers: {
             Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
           },
-        }).catch(() => {}); // Silent fail for download tracking
+        }).catch(() => {}) // Silent fail for download tracking
       }
 
       // Create fabric image from URL
       const fabricImage = await FabricImage.fromURL(imageUrl, {
-        crossOrigin: "anonymous",
-      });
+        crossOrigin: 'anonymous',
+      })
 
       // USE PROJECT DIMENSIONS instead of canvas dimensions for proper scaling
-      const canvasWidth = project.width; // Logical canvas width
-      const canvasHeight = project.height; // Logical canvas height
+      const canvasWidth = project.width // Logical canvas width
+      const canvasHeight = project.height // Logical canvas height
 
       // Calculate scales
-      const scaleX = canvasWidth / fabricImage.width;
-      const scaleY = canvasHeight / fabricImage.height;
+      const scaleX = canvasWidth / fabricImage.width
+      const scaleY = canvasHeight / fabricImage.height
 
       // Use Math.max to FILL the entire canvas (ensures no empty space)
-      const scale = Math.max(scaleX, scaleY);
+      const scale = Math.max(scaleX, scaleY)
 
       fabricImage.set({
         scaleX: scale,
         scaleY: scale,
-        originX: "center",
-        originY: "center",
+        originX: 'center',
+        originY: 'center',
         left: canvasWidth / 2, // Use project dimensions
         top: canvasHeight / 2, // Use project dimensions
-      });
+      })
 
       // Set background and render
-      canvasEditor.backgroundImage = fabricImage;
-      canvasEditor.requestRenderAll();
-      setSelectedImageId(null);
+      canvasEditor.backgroundImage = fabricImage
+      canvasEditor.requestRenderAll()
+      setSelectedImageId(null)
 
-      console.log("Background set:", {
+      console.log('Background set:', {
         imageSize: `${fabricImage.width}x${fabricImage.height}`,
         canvasSize: `${canvasWidth}x${canvasHeight}`,
         scale: scale,
         finalSize: `${fabricImage.width * scale}x${fabricImage.height * scale}`,
-      });
+      })
     } catch (error) {
-      console.error("Error setting background image:", error);
-      alert("Failed to set background image. Please try again.");
-      setSelectedImageId(null);
+      console.error('Error setting background image:', error)
+      alert('Failed to set background image. Please try again.')
+      setSelectedImageId(null)
     }
-  };
+  }
 
   // Handle search on Enter key
   const handleSearchKeyPress = (e) => {
-    if (e.key === "Enter") {
-      searchUnsplashImages();
+    if (e.key === 'Enter') {
+      searchUnsplashImages()
     }
-  };
+  }
 
   if (!canvasEditor) {
     return (
       <div className="p-4">
         <p className="text-white/70 text-sm">Canvas not ready</p>
       </div>
-    );
+    )
   }
 
   return (
@@ -274,7 +274,7 @@ export function BackgroundControls({ project }) {
             <HexColorPicker
               color={backgroundColor}
               onChange={setBackgroundColor}
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
             />
 
             <div className="flex items-center gap-2">
@@ -351,7 +351,7 @@ export function BackgroundControls({ project }) {
                   >
                     <img
                       src={image.urls.small}
-                      alt={image.alt_description || "Background image"}
+                      alt={image.alt_description || 'Background image'}
                       className="w-full h-24 object-cover"
                     />
 
@@ -427,5 +427,5 @@ export function BackgroundControls({ project }) {
         </Button>
       </div>
     </div>
-  );
+  )
 }

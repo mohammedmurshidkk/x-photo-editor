@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useMousePosition } from '../../hooks/use-mouse-position';
+import React, { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { useMousePosition } from '../../hooks/use-mouse-position'
 
 const CustomCursor = () => {
-  const { x, y } = useMousePosition();
-  const [isHovering, setIsHovering] = useState(false);
+  const { x, y } = useMousePosition()
+  const [isHovering, setIsHovering] = useState(false)
 
   useEffect(() => {
-    const handleMouseEnter = () => setIsHovering(true);
-    const handleMouseLeave = () => setIsHovering(false);
+    const handleMouseEnter = () => setIsHovering(true)
+    const handleMouseLeave = () => setIsHovering(false)
 
     document.querySelectorAll('a, button, [data-hover]').forEach((el) => {
-      el.addEventListener('mouseenter', handleMouseEnter);
-      el.addEventListener('mouseleave', handleMouseLeave);
-    });
+      el.addEventListener('mouseenter', handleMouseEnter)
+      el.addEventListener('mouseleave', handleMouseLeave)
+    })
 
     return () => {
       document.querySelectorAll('a, button, [data-hover]').forEach((el) => {
-        el.removeEventListener('mouseenter', handleMouseEnter);
-        el.removeEventListener('mouseleave', handleMouseLeave);
-      });
-    };
-  }, []);
+        el.removeEventListener('mouseenter', handleMouseEnter)
+        el.removeEventListener('mouseleave', handleMouseLeave)
+      })
+    }
+  }, [])
 
   const variants = {
     default: {
@@ -38,7 +38,7 @@ const CustomCursor = () => {
       backgroundColor: 'rgba(255, 255, 255, 1)',
       mixBlendMode: 'difference',
     },
-  };
+  }
 
   return (
     <motion.div
@@ -47,7 +47,7 @@ const CustomCursor = () => {
       animate={isHovering ? 'hover' : 'default'}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
     />
-  );
-};
+  )
+}
 
-export default CustomCursor;
+export default CustomCursor

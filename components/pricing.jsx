@@ -1,5 +1,5 @@
-import { PricingTable } from '@clerk/clerk-react';
-import { clerkTheme } from '@/app/clerk-theme';
+import { PricingTable } from '@clerk/clerk-react'
+import { clerkTheme } from '@/app/clerk-theme'
 
 const Pricing = () => {
   return (
@@ -11,7 +11,7 @@ const Pricing = () => {
         <PricingTable appearance={clerkTheme} />
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Pricing;
+export default Pricing

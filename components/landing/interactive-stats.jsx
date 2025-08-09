@@ -1,47 +1,51 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { useState, useEffect } from 'react';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
+import { useState, useEffect } from 'react'
 
 const AnimatedCounter = ({ target, duration = 2, suffix = '' }) => {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.5,
-  });
+  })
 
   useEffect(() => {
     if (inView) {
-      let start = 0;
-      const end = target;
-      const increment = end / (duration * 60);
+      let start = 0
+      const end = target
+      const increment = end / (duration * 60)
 
       const timer = setInterval(() => {
-        start += increment;
+        start += increment
         if (start >= end) {
-          clearInterval(timer);
-          setCount(end);
+          clearInterval(timer)
+          setCount(end)
         } else {
-          setCount(Math.ceil(start));
+          setCount(Math.ceil(start))
         }
-      }, 16);
+      }, 16)
 
-      return () => clearInterval(timer);
+      return () => clearInterval(timer)
     }
-  }, [inView, target, duration]);
+  }, [inView, target, duration])
 
   return (
-    <span ref={ref} className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400">
-      {count.toLocaleString()}{suffix}
+    <span
+      ref={ref}
+      className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400"
+    >
+      {count.toLocaleString()}
+      {suffix}
     </span>
-  );
-};
+  )
+}
 
 const stats = [
   { id: 1, value: 10, suffix: 'M+', label: 'Images Processed' },
   { id: 2, value: 99, suffix: '.9%', label: 'Uptime Guarantee' },
   { id: 3, value: 200, suffix: 'K+', label: 'Happy Creators' },
-];
+]
 
 const InteractiveStats = () => {
   return (
@@ -59,7 +63,7 @@ const InteractiveStats = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default InteractiveStats;
+export default InteractiveStats

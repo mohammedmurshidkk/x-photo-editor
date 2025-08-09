@@ -1,55 +1,55 @@
-'use client';
+'use client'
 
-import React, { useState, useCallback } from 'react';
-import { X, Upload, Image as ImageIcon, Loader2, Crown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import React, { useState, useCallback } from 'react'
+import { X, Upload, Image as ImageIcon, Loader2, Crown } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/components/ui/dialog';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
-import { useDropzone } from 'react-dropzone';
-import { useConvexMutation, useConvexQuery } from '@/hooks/use-convex-query';
-import { usePlanAccess } from '@/hooks/use-plan-access';
-import { UpgradeModal } from '@/components/upgrade-modal';
-import { api } from '@/convex/_generated/api';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
+} from '@/components/ui/dialog'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Badge } from '@/components/ui/badge'
+import { useDropzone } from 'react-dropzone'
+import { useConvexMutation, useConvexQuery } from '@/hooks/use-convex-query'
+import { usePlanAccess } from '@/hooks/use-plan-access'
+import { UpgradeModal } from '@/components/upgrade-modal'
+import { api } from '@/convex/_generated/api'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 export function NewProjectModal({ isOpen, onClose }) {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
-  const [projectTitle, setProjectTitle] = useState('');
-  const [isUploading, setIsUploading] = useState(false);
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [previewUrl, setPreviewUrl] = useState(null)
+  const [projectTitle, setProjectTitle] = useState('')
+  const [isUploading, setIsUploading] = useState(false)
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
 
-  const { mutate: createProject } = useConvexMutation(api.projects.create);
-  const { data: projects } = useConvexQuery(api.projects.getUserProjects);
-  const { canCreateProject, isFree } = usePlanAccess();
-  const router = useRouter();
+  const { mutate: createProject } = useConvexMutation(api.projects.create)
+  const { data: projects } = useConvexQuery(api.projects.getUserProjects)
+  const { canCreateProject, isFree } = usePlanAccess()
+  const router = useRouter()
 
   // Check if user can create new project
-  const currentProjectCount = projects?.length || 0;
-  const canCreate = canCreateProject(currentProjectCount);
+  const currentProjectCount = projects?.length || 0
+  const canCreate = canCreateProject(currentProjectCount)
 
   // Handle file drop
   const onDrop = useCallback((acceptedFiles) => {
-    const file = acceptedFiles[0];
+    const file = acceptedFiles[0]
     if (file) {
-      setSelectedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
+      setSelectedFile(file)
+      setPreviewUrl(URL.createObjectURL(file))
 
       // Auto-generate title from filename
-      const nameWithoutExt = file.name.replace(/\.[^/.]+$/, '');
-      setProjectTitle(nameWithoutExt || 'Untitled Project');
+      const nameWithoutExt = file.name.replace(/\.[^/.]+$/, '')
+      setProjectTitle(nameWithoutExt || 'Untitled Project')
     }
-  }, []);
+  }, [])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -58,38 +58,38 @@ export function NewProjectModal({ isOpen, onClose }) {
     },
     maxFiles: 1,
     maxSize: 20 * 1024 * 1024, // 20MB limit
-  });
+  })
 
   // Handle create project with plan limit check
   const handleCreateProject = async () => {
     // Check project limits first
     if (!canCreate) {
-      setShowUpgradeModal(true);
-      return;
+      setShowUpgradeModal(true)
+      return
     }
 
     if (!selectedFile || !projectTitle.trim()) {
-      toast.error('Please select an image and enter a project title');
-      return;
+      toast.error('Please select an image and enter a project title')
+      return
     }
 
-    setIsUploading(true);
+    setIsUploading(true)
 
     try {
       // Upload to ImageKit via our API route
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-      formData.append('fileName', selectedFile.name);
+      const formData = new FormData()
+      formData.append('file', selectedFile)
+      formData.append('fileName', selectedFile.name)
 
       const uploadResponse = await fetch('/api/imagekit/upload', {
         method: 'POST',
         body: formData,
-      });
+      })
 
-      const uploadData = await uploadResponse.json();
+      const uploadData = await uploadResponse.json()
 
       if (!uploadData.success) {
-        throw new Error(uploadData.error || 'Failed to upload image');
+        throw new Error(uploadData.error || 'Failed to upload image')
       }
 
       // Create project in Convex
@@ -101,30 +101,30 @@ export function NewProjectModal({ isOpen, onClose }) {
         width: uploadData.width || 800,
         height: uploadData.height || 600,
         canvasState: null,
-      });
+      })
 
-      toast.success('Project created successfully!');
+      toast.success('Project created successfully!')
 
       // Navigate to editor
-      router.push(`/editor/${projectId}`);
+      router.push(`/editor/${projectId}`)
     } catch (error) {
-      console.error('Error creating project:', error);
+      console.error('Error creating project:', error)
       toast.error(
-        error.message || 'Failed to create project. Please try again.'
-      );
+        error.message || 'Failed to create project. Please try again.',
+      )
     } finally {
-      setIsUploading(false);
+      setIsUploading(false)
     }
-  };
+  }
 
   // Reset modal state
   const handleClose = () => {
-    setSelectedFile(null);
-    setPreviewUrl(null);
-    setProjectTitle('');
-    setIsUploading(false);
-    onClose();
-  };
+    setSelectedFile(null)
+    setPreviewUrl(null)
+    setProjectTitle('')
+    setIsUploading(false)
+    onClose()
+  }
 
   return (
     <>
@@ -203,9 +203,9 @@ export function NewProjectModal({ isOpen, onClose }) {
                     variant="ghost"
                     size="icon"
                     onClick={() => {
-                      setSelectedFile(null);
-                      setPreviewUrl(null);
-                      setProjectTitle('');
+                      setSelectedFile(null)
+                      setPreviewUrl(null)
+                      setProjectTitle('')
                     }}
                     className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white"
                   >
@@ -282,5 +282,5 @@ export function NewProjectModal({ isOpen, onClose }) {
         reason="Free plan is limited to 3 projects. Upgrade to Pro for unlimited projects and access to all AI editing tools."
       />
     </>
-  );
+  )
 }

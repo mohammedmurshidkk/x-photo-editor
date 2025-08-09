@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from 'react'
+import { motion } from 'framer-motion'
 
 const FloatingShapes = () => {
   const shapes = [
@@ -34,7 +34,7 @@ const FloatingShapes = () => {
       },
       gradient: 'from-green-400 via-teal-500 to-blue-600',
     },
-  ];
+  ]
 
   return (
     <div className="absolute inset-0 overflow-hidden -z-10">
@@ -55,7 +55,7 @@ const FloatingShapes = () => {
         />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default FloatingShapes;
+export default FloatingShapes

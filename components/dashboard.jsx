@@ -1,12 +1,14 @@
-import { api } from '@/convex/_generated/api';
-import { useConvexQuery } from '@/hooks/use-convex-query';
-import { useQuery } from 'convex/react';
-import React from 'react';
+import { api } from '@/convex/_generated/api'
+import { useConvexQuery } from '@/hooks/use-convex-query'
+import { useQuery } from 'convex/react'
+import React from 'react'
 
 function Dashboard() {
-  const { data, error, isLoading } = useConvexQuery(api.projects.getUserProjects);
+  const { data, error, isLoading } = useConvexQuery(
+    api.projects.getUserProjects,
+  )
 
-  return <div>Dashboard</div>;
+  return <div>Dashboard</div>
 }
 
-export default Dashboard;
+export default Dashboard

@@ -1,34 +1,34 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
-import { useParams } from "next/navigation";
-import { useConvexQuery } from "@/hooks/use-convex-query";
-import { Loader2, Monitor } from "lucide-react";
+import React, { useState } from 'react'
+import { useParams } from 'next/navigation'
+import { useConvexQuery } from '@/hooks/use-convex-query'
+import { Loader2, Monitor } from 'lucide-react'
 // import { EditorTopBar } from "./_components/editor-topbar";
 // import { EditorSidebar } from "./_components/editor-sidebar";
 // import CanvasEditor from "./_components/canvas";
-import { RingLoader } from "react-spinners";
-import { CanvasContext } from "@/context/canvas-context";
-import { api } from "@/convex/_generated/api";
-import CanvasEditor from "./_components/canvas";
-import { EditorSidebar } from "./_components/editor-sidebar";
-import { EditorTopBar } from "./_components/editor-topbar";
+import { RingLoader } from 'react-spinners'
+import { CanvasContext } from '@/context/canvas-context'
+import { api } from '@/convex/_generated/api'
+import CanvasEditor from './_components/canvas'
+import { EditorSidebar } from './_components/editor-sidebar'
+import { EditorTopBar } from './_components/editor-topbar'
 
 export default function EditorPage() {
-  const params = useParams();
-  const projectId = params.project_id;
-  const [canvasEditor, setCanvasEditor] = useState(null);
-  const [processingMessage, setProcessingMessage] = useState(null);
+  const params = useParams()
+  const projectId = params.project_id
+  const [canvasEditor, setCanvasEditor] = useState(null)
+  const [processingMessage, setProcessingMessage] = useState(null)
 
   // State for active tool
-  const [activeTool, setActiveTool] = useState("resize");
+  const [activeTool, setActiveTool] = useState('resize')
 
   // Get project data
   const {
     data: project,
     isLoading,
     error,
-  } = useConvexQuery(api.projects.getProject, { projectId });
+  } = useConvexQuery(api.projects.getProject, { projectId })
 
   if (isLoading) {
     return (
@@ -38,7 +38,7 @@ export default function EditorPage() {
           <p className="text-white/70">Loading...</p>
         </div>
       </div>
-    );
+    )
   }
 
   if (error || !project) {
@@ -54,7 +54,7 @@ export default function EditorPage() {
           </p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -117,5 +117,5 @@ export default function EditorPage() {
         </div>
       </div>
     </CanvasContext.Provider>
-  );
+  )
 }

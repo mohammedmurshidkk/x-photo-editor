@@ -1,9 +1,12 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from 'react'
+import { motion } from 'framer-motion'
 
 const HeroSection = () => {
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center text-center overflow-hidden">
+    <section
+      id="home"
+      className="relative h-screen flex items-center justify-center text-center overflow-hidden"
+    >
       <div className="relative z-10 flex flex-col items-center px-4">
         <motion.h1
           initial={{ opacity: 0, y: 50 }}
@@ -19,7 +22,9 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
           className="mt-6 text-lg md:text-xl max-w-2xl text-slate-300"
         >
-          Experience the next generation of photo editing with our AI-powered tools. Create stunning visuals, remove backgrounds instantly, and upscale images with quantum precision.
+          Experience the next generation of photo editing with our AI-powered
+          tools. Create stunning visuals, remove backgrounds instantly, and
+          upscale images with quantum precision.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
@@ -37,7 +42,7 @@ const HeroSection = () => {
         </motion.div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default HeroSection;
+export default HeroSection
