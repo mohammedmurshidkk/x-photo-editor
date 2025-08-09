@@ -14,14 +14,12 @@ const DashboardPage = () => {
   const [showNewProjectModal, setShowNewProjectModal] = useState(false)
   const router = useRouter()
 
-  const {
-    data: projects,
-    error,
-    isLoading,
-  } = useConvexQuery(api.projects.getUserProjects)
+  const { data: projects, isLoading } = useConvexQuery(
+    api.projects.getUserProjects,
+  )
 
   return (
-    <div className="min-h-screen pt-32 pb-16 relative">
+    <div className="min-h-screen pt-24 pb-16 relative md:pt-32">
       <Button
         variant="ghost"
         asChild
@@ -35,12 +33,12 @@ const DashboardPage = () => {
       </Button>
       <div className="container mx-auto px-6">
         {/* Dashboard Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-bold text-white mb-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8">
+          <div className="mb-4 sm:mb-0">
+            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">
               Your Projects
             </h1>
-            <p className="text-white/70">
+            <p className="text-white/70 text-sm sm:text-base">
               Create and manage your AI-powered image designs
             </p>
           </div>
@@ -49,7 +47,7 @@ const DashboardPage = () => {
             onClick={() => setShowNewProjectModal(true)}
             variant="primary"
             size="lg"
-            className="gap-2"
+            className="gap-2 w-full sm:w-auto"
           >
             <Plus className="h-5 w-5" />
             New Project

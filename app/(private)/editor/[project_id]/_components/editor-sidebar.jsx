@@ -57,7 +57,7 @@ const TOOL_CONFIGS = {
   },
 }
 
-export function EditorSidebar({ project }) {
+export function EditorSidebar({ project, showSidebar }) {
   const { activeTool } = useCanvas()
 
   const toolConfig = TOOL_CONFIGS[activeTool]
@@ -69,7 +69,9 @@ export function EditorSidebar({ project }) {
   const Icon = toolConfig.icon
 
   return (
-    <div className="min-w-96 border-r flex flex-col">
+    <div
+      className={`w-full md:w-96 lg:w-80 border-r flex flex-col ${showSidebar ? 'block' : 'hidden lg:block'}`}
+    >
       {/* Sidebar Header */}
       <div className="p-4 border-b">
         <div className="flex items-center gap-3">

@@ -50,7 +50,9 @@ export function UpgradeModal({ isOpen, onClose, restrictedTool, reason }) {
             </Alert>
           )}
 
-          <PricingTable />
+          <div onClick={onClose}>
+            <PricingTable />
+          </div>
         </div>
 
         <DialogFooter className="justify-center">

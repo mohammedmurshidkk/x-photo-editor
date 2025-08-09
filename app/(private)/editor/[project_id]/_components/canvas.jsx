@@ -255,7 +255,7 @@ function CanvasEditor({ project }) {
         </div>
       )}
 
-      <div className="px-5">
+      <div className="px-2 sm:px-5">
         <canvas id="canvas" className="border" ref={canvasRef} />
       </div>
     </div>

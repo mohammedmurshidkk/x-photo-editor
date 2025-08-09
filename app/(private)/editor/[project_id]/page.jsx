@@ -4,9 +4,6 @@ import React, { useState } from 'react'
 import { useParams } from 'next/navigation'
 import { useConvexQuery } from '@/hooks/use-convex-query'
 import { Loader2, Monitor } from 'lucide-react'
-// import { EditorTopBar } from "./_components/editor-topbar";
-// import { EditorSidebar } from "./_components/editor-sidebar";
-// import CanvasEditor from "./_components/canvas";
 import { RingLoader } from 'react-spinners'
 import { CanvasContext } from '@/context/canvas-context'
 import { api } from '@/convex/_generated/api'
@@ -19,6 +16,7 @@ export default function EditorPage() {
   const projectId = params.project_id
   const [canvasEditor, setCanvasEditor] = useState(null)
   const [processingMessage, setProcessingMessage] = useState(null)
+  const [showSidebar, setShowSidebar] = useState(true)
 
   // State for active tool
   const [activeTool, setActiveTool] = useState('resize')
@@ -102,12 +100,15 @@ export default function EditorPage() {
           )}
 
           {/* Top Bar */}
-          <EditorTopBar project={project} />
+          <EditorTopBar
+            project={project}
+            onToggleSidebar={() => setShowSidebar((prev) => !prev)}
+          />
 
           {/* Main Editor Layout */}
           <div className="flex flex-1 overflow-hidden">
             {/* Sidebar */}
-            <EditorSidebar project={project} />
+            <EditorSidebar project={project} showSidebar={showSidebar} />
 
             {/* Canvas Area */}
             <div className="flex-1 bg-slate-800">

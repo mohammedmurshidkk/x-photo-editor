@@ -19,6 +19,7 @@ import {
   Download,
   FileImage,
   Lock,
+  Menu,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -106,7 +107,7 @@ const EXPORT_FORMATS = [
   },
 ]
 
-export function EditorTopBar({ project }) {
+export function EditorTopBar({ project, onToggleSidebar }) {
   const router = useRouter()
   const [isExporting, setIsExporting] = useState(false)
   const [exportFormat, setExportFormat] = useState(null)
@@ -413,9 +414,9 @@ export function EditorTopBar({ project }) {
     <>
       <div className="border-b px-6 py-3">
         {/* Header Row */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4">
           {/* Left: Back button and project name */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 mb-2 sm:mb-0">
             <Button
               variant="ghost"
               size="sm"
@@ -425,12 +426,22 @@ export function EditorTopBar({ project }) {
               <ArrowLeft className="h-4 w-4 mr-2" />
               All Projects
             </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onToggleSidebar}
+              className="text-white hover:text-gray-300 lg:hidden"
+            >
+              <Menu className="h-4 w-4" />
+            </Button>
           </div>
 
-          <h1 className="font-extrabold capitalize">{project.title}</h1>
+          <h1 className="font-extrabold capitalize text-lg sm:text-xl">
+            {project.title}
+          </h1>
 
           {/* Right: Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 mt-2 sm:mt-0">
             {/* Reset Button */}
             <Button
               variant="outline"
@@ -442,12 +453,12 @@ export function EditorTopBar({ project }) {
               {isSaving ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Resetting...
+                  <span className="hidden sm:inline">Resetting...</span>
                 </>
               ) : (
                 <>
                   <RefreshCcw className="h-4 w-4" />
-                  Reset
+                  <span className="hidden sm:inline">Reset</span>
                 </>
               )}
             </Button>
@@ -463,12 +474,12 @@ export function EditorTopBar({ project }) {
               {isSaving ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Saving...
+                  <span className="hidden sm:inline">Saving...</span>
                 </>
               ) : (
                 <>
                   <Save className="h-4 w-4" />
-                  Save
+                  <span className="hidden sm:inline">Save</span>
                 </>
               )}
             </Button>
@@ -490,8 +501,8 @@ export function EditorTopBar({ project }) {
                   ) : (
                     <>
                       <Download className="h-4 w-4" />
-                      Export
-                      <ChevronDown className="h-4 w-4" />
+                      <span className="hidden sm:inline">Export</span>
+                      <ChevronDown className="h-4 w-4 hidden sm:inline" />
                     </>
                   )}
                 </Button>
@@ -544,9 +555,9 @@ export function EditorTopBar({ project }) {
         </div>
 
         {/* Tools Row */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between overflow-x-auto whitespace-nowrap py-2">
           {/* Tools */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 pb-2 sm:pb-0">
             {TOOLS.map((tool) => {
               const Icon = tool.icon
               const isActive = activeTool === tool.id

@@ -129,8 +129,8 @@ export function NewProjectModal({ isOpen, onClose }) {
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className="max-w-2xl bg-slate-800 border-white/10">
-          <DialogHeader>
+        <DialogContent className="w-[90%] max-w-md md:max-w-2xl bg-slate-800 border-white/10">
+          <DialogHeader className="pt-4 sm:pt-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <DialogTitle className="text-2xl font-bold text-white">
@@ -160,8 +160,8 @@ export function NewProjectModal({ isOpen, onClose }) {
                       : 'Project Limit Reached'}
                   </div>
                   {currentProjectCount === 2
-                    ? 'This will be your last free project. Upgrade to Pixxel Pro for unlimited projects.'
-                    : 'Free plan is limited to 3 projects. Upgrade to Pixxel Pro to create more projects.'}
+                    ? 'This will be your last free project. Upgrade to Pro for unlimited projects.'
+                    : 'Free plan is limited to 3 projects. Upgrade to Pro to create more projects.'}
                 </AlertDescription>
               </Alert>
             )}
@@ -170,7 +170,7 @@ export function NewProjectModal({ isOpen, onClose }) {
             {!selectedFile ? (
               <div
                 {...getRootProps()}
-                className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all ${
+                className={`border-2 border-dashed rounded-xl p-6 sm:p-12 text-center cursor-pointer transition-all ${
                   isDragActive
                     ? 'border-cyan-400 bg-cyan-400/5'
                     : 'border-white/20 hover:border-white/40'
@@ -197,7 +197,7 @@ export function NewProjectModal({ isOpen, onClose }) {
                   <img
                     src={previewUrl}
                     alt="Preview"
-                    className="w-full h-64 object-cover rounded-xl border border-white/10"
+                    className="w-full h-48 sm:h-64 object-contain rounded-xl border border-white/10"
                   />
                   <Button
                     variant="ghost"

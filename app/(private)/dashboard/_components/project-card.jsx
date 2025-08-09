@@ -45,7 +45,7 @@ export default function ProjectCard({ project, onEdit }) {
         )}
 
         {/* Hover Actions */}
-        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+        <div className="absolute inset-0 bg-black/60 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
           <Button variant="glass" size="sm" onClick={onEdit} className="gap-2">
             <Edit className="h-4 w-4" />
             Edit

@@ -1,7 +1,5 @@
 # X-Photo Editor: Open-Source AI Image Editor Code | Next.js, Convex, Clerk Full-Stack Learning Project
 
-## A CTO's Overview of a Modern Web Application
-
 This document provides a comprehensive technical overview of the X-Photo Editor, an AI-powered image editing platform. Originally conceived as a hands-on learning project inspired by a content creator, it serves as a practical demonstration of integrating cutting-edge web technologies to build a real-time, interactive, and scalable application. It is designed to be an open-source resource for students and developers looking to understand modern full-stack development practices.
 
 ## 🚀 Key Features
@@ -111,7 +109,6 @@ This application is designed for seamless deployment to [Vercel](https://vercel.
 
 ## 📸 Screenshots
 
-_(Please insert your screenshots here. Use Markdown image syntax: `![Alt text for image](path/to/image.png)`)_
 
 ### Landing Page
 
@@ -121,10 +118,6 @@ _(Please insert your screenshots here. Use Markdown image syntax: `![Alt text fo
 
 ![Sign-In Page](screenshots/sign-in.png)
 
-### Sign-Up Page
-
-![Sign-Up Page](screenshots/sign-up.png)
-
 ### Dashboard Page
 
 ![Dashboard Page](screenshots/dashboard.png)
@@ -132,14 +125,6 @@ _(Please insert your screenshots here. Use Markdown image syntax: `![Alt text fo
 ### Editor Page
 
 ![Editor Page](screenshots/editor-page.png)
-
-### Pricing Page
-
-![Pricing Page](screenshots/pricing-page.png)
-
-### User Button/Profile Menu
-
-![User Button/Profile Menu](screenshots/user-button-profile-menu.png)
 
 ## 🤝 Contributing
 

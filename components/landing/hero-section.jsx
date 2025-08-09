@@ -1,7 +1,13 @@
+'use client'
+
 import React from 'react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
+import useStoreUserEffect from '@/hooks/use-store-user-effect'
 
 const HeroSection = () => {
+  const { isAuthenticated } = useStoreUserEffect()
+
   return (
     <section
       id="home"
@@ -32,13 +38,13 @@ const HeroSection = () => {
           transition={{ duration: 0.5, delay: 0.4, ease: 'easeOut' }}
           className="mt-10"
         >
-          <a
-            href="#pricing"
+          <Link
+            href={isAuthenticated ? '/dashboard' : '/sign-in'}
             className="px-8 py-4 font-semibold text-white bg-blue-600 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
             data-hover
           >
             Experience the Magic
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

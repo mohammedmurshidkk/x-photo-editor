@@ -24,8 +24,8 @@ function Header() {
   const [active, setActive] = useState('')
 
   return (
-    <header className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 text-nowrap">
-      <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-full px-8 py-3 flex items-center justify-between gap-8">
+    <header className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 text-nowrap w-[90%] md:w-auto">
+      <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-full px-4 md:px-8 py-2 md:py-3 flex items-center justify-between gap-8">
         <Link href="/" className="mr-10 md:mr-20">
           <span className="font-extrabold text-4xl font-stretch-200%">X</span>
         </Link>
@@ -48,7 +48,11 @@ function Header() {
                   <motion.span
                     layoutId="active-pill"
                     className="absolute inset-x-0 bottom-[-8px] h-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"
-                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 300,
+                      damping: 25,
+                    }}
                   />
                 )}
               </Link>
@@ -59,7 +63,10 @@ function Header() {
         <div className="flex items-center gap-3 ml-10 md:ml-20">
           <Authenticated>
             <Link href="/dashboard">
-              <Button variant="glass" className="hidden sm:flex">
+              <Button
+                variant="glass"
+                className="flex w-8 h-8 md:h-auto md:w-auto"
+              >
                 <LayoutDashboard className="h-4 w-4" />
                 <span className="hidden md:flex">Dashboard</span>
               </Button>
@@ -81,7 +88,7 @@ function Header() {
 
           <Unauthenticated>
             <SignInButton>
-              <Button variant="glass" className="hidden sm:flex">
+              <Button variant="glass" className="flex">
                 Sign In
               </Button>
             </SignInButton>
