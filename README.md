@@ -1,4 +1,4 @@
-# X-Photo Editor: AI-Powered Image Editing Platform
+# X-Photo Editor: Open-Source AI Image Editor Code | Next.js, Convex, Clerk Full-Stack Learning Project
 
 ## A CTO's Overview of a Modern Web Application
 
@@ -6,12 +6,13 @@ This document provides a comprehensive technical overview of the X-Photo Editor,
 
 ## 🚀 Key Features
 
-*   **Intuitive Image Editor:** A rich, interactive canvas for image manipulation.
-*   **AI-Powered Enhancements:** Integration with AI capabilities for advanced editing features (e.g., background removal, style transfer, upscaling).
-*   **Real-time Database Updates:** Leveraging Convex for seamless, real-time data synchronization.
-*   **Robust Authentication:** Secure user management and authentication powered by Clerk.
-*   **Responsive UI:** Built with Next.js and Tailwind CSS for a consistent experience across devices.
-*   **Subscription Management:** Integrated pricing and plan management.
+*   **Intuitive AI Image Editor:** A rich, interactive canvas for **AI-powered image manipulation** and **photo enhancement**.
+*   **Advanced AI Integrations:** Designed for **Vertex AI** capabilities for features like **background removal**, **image upscaling**, and **style transfer**.
+*   **Real-time Data Synchronization:** Leveraging **Convex** for seamless, **real-time database updates** and **serverless backend functions**.
+*   **Robust User Authentication:** Secure **user management** and **authentication** powered by **Clerk**, including **sign-in**, **sign-up**, and **user profiles**.
+*   **Responsive UI/UX:** Built with **Next.js App Router**, **Tailwind CSS**, and **Shadcn UI** for a consistent and visually appealing experience across all devices.
+*   **Subscription & Pricing Management:** Integrated **pricing plans** and **subscription management** features.
+*   **Open-Source Codebase:** A well-structured and documented **codebase** ideal for **learning full-stack web development**.
 
 ## 💻 Technology Stack
 

@@ -1,6 +1,5 @@
 'use client';
 
-import Dashboard from '@/components/dashboard';
 import { Button } from '@/components/ui/button';
 import { api } from '@/convex/_generated/api';
 import { useConvexQuery } from '@/hooks/use-convex-query';
@@ -13,6 +12,7 @@ import Link from 'next/link';
 
 const DashboardPage = () => {
   const [showNewProjectModal, setShowNewProjectModal] = useState(false);
+  const router = useRouter();
 
   const {
     data: projects,

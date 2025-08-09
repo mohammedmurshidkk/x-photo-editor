@@ -27,7 +27,7 @@ function Header() {
     <header className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 text-nowrap">
       <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-full px-8 py-3 flex items-center justify-between gap-8">
         <Link href="/" className="mr-10 md:mr-20">
-          Logo
+          <span className='font-extrabold text-4xl font-stretch-200%'>X</span>
         </Link>
 
         {pathname === '/' && (

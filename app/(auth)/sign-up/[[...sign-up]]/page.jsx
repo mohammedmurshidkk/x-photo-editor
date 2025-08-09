@@ -5,6 +5,12 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'X-Photo Editor | Sign Up',
+  description: 'Create your X-Photo Editor account to start using AI-powered image editing tools. Secure and easy sign-up process with Clerk.',
+  keywords: 'sign up, register, create account, authentication, Clerk, AI photo editor, image editing, Next.js',
+};
+
 const SignUpPage = () => {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen">
