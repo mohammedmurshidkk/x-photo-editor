@@ -1,10 +1,6 @@
 'use client';
 
-import {
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from '@clerk/nextjs';
+import { SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useState } from 'react';
@@ -13,6 +9,8 @@ import useStoreUserEffect from '@/hooks/use-store-user-effect';
 import { BarLoader } from 'react-spinners';
 import { Authenticated, Unauthenticated } from 'convex/react';
 import { motion } from 'framer-motion';
+import { LayoutDashboard } from 'lucide-react';
+import { clerkTheme } from '@/app/clerk-theme';
 
 const navLinks = [
   { href: '#features', label: 'Features' },
@@ -29,7 +27,7 @@ function Header() {
     <header className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 text-nowrap">
       <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-full px-8 py-3 flex items-center justify-between gap-8">
         <Link href="/" className="mr-10 md:mr-20">
-          Logo
+          <span className='font-extrabold text-4xl font-stretch-200%'>X</span>
         </Link>
 
         {pathname === '/' && (
@@ -59,18 +57,39 @@ function Header() {
         )}
 
         <div className="flex items-center gap-3 ml-10 md:ml-20">
+          <Authenticated>
+            <Link href="/dashboard">
+              <Button variant="glass" className="hidden sm:flex">
+                <LayoutDashboard className="h-4 w-4" />
+                <span className="hidden md:flex">Dashboard</span>
+              </Button>
+            </Link>
+
+            <UserButton
+              appearance={{
+                ...clerkTheme,
+                elements: {
+                  avatarBox: 'w-10 h-10 rounded-lg border border-white/20',
+                  userButtonPopoverCard:
+                    'shadow-xl backdrop-blur-md bg-slate-900/90 border border-white/20',
+                  userPreviewMainIdentifier: 'font-semibold text-white',
+                },
+              }}
+              afterSignOutUrl="/"
+            />
+          </Authenticated>
+
           <Unauthenticated>
             <SignInButton>
-              <Button variant="glass">Sign In</Button>
+              <Button variant="glass" className="hidden sm:flex">
+                Sign In
+              </Button>
             </SignInButton>
+
             <SignUpButton>
-              <Button variant="primary">Get started</Button>
+              <Button variant="primary">Get Started</Button>
             </SignUpButton>
           </Unauthenticated>
-
-          <Authenticated>
-            <UserButton />
-          </Authenticated>
         </div>
 
         {isLoading && (

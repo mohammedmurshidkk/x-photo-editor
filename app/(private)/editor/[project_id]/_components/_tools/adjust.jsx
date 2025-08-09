@@ -5,7 +5,7 @@ import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { RotateCcw } from "lucide-react";
 import { filters } from "fabric";
-import { useCanvas } from "@/context/CanvasContext";
+import { useCanvas } from "@/context/canvas-context";
 
 // Filter configurations
 const FILTER_CONFIGS = [

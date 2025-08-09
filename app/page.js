@@ -1,13 +1,11 @@
-'use client'
-
-import LandingPage from '@/components/landing/LandingPage';
-import { Button } from '@/components/ui/button';
-import Image from 'next/image';
+import Header from '@/components/header';
+import LandingPage from '@/components/landing/landing-page';
 
 export default function Home() {
   return (
-    <div className="">
+    <>
+      <Header />
       <LandingPage />
-    </div>
+    </>
   );
 }

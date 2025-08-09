@@ -1,17 +1,18 @@
 'use client';
 
-import Dashboard from '@/components/dashboard';
 import { Button } from '@/components/ui/button';
 import { api } from '@/convex/_generated/api';
 import { useConvexQuery } from '@/hooks/use-convex-query';
-import { useQuery } from 'convex/react';
-import { Image, Plus, Sparkles } from 'lucide-react';
+import { Image, Plus, Sparkles, ArrowLeft } from 'lucide-react';
 import React, { useState } from 'react';
 import { ProjectGrid } from './_components/project-grid';
 import { NewProjectModal } from './_components/new-project-modal';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const DashboardPage = () => {
   const [showNewProjectModal, setShowNewProjectModal] = useState(false);
+  const router = useRouter();
 
   const {
     data: projects,
@@ -19,10 +20,19 @@ const DashboardPage = () => {
     isLoading,
   } = useConvexQuery(api.projects.getUserProjects);
 
-  console.log('#### __  projects', projects);
-
   return (
-    <div className="min-h-screen pt-32 pb-16">
+    <div className="min-h-screen pt-32 pb-16 relative">
+      <Button
+        variant="ghost"
+        asChild
+        onClick={() => router.push('/')}
+        className="absolute top-4 left-4"
+      >
+        <Link href="/">
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Home
+        </Link>
+      </Button>
       <div className="container mx-auto px-6">
         {/* Dashboard Header */}
         <div className="flex items-center justify-between mb-8">

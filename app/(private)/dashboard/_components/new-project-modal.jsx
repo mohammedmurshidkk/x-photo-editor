@@ -22,8 +22,6 @@ import { api } from '@/convex/_generated/api';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-console.log('##### api.projects', api.projects)
-
 export function NewProjectModal({ isOpen, onClose }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -61,8 +59,6 @@ export function NewProjectModal({ isOpen, onClose }) {
     maxFiles: 1,
     maxSize: 20 * 1024 * 1024, // 20MB limit
   });
-
-  console.log('###### canCreate', canCreate, currentProjectCount)
 
   // Handle create project with plan limit check
   const handleCreateProject = async () => {

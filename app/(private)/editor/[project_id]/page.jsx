@@ -8,7 +8,7 @@ import { Loader2, Monitor } from "lucide-react";
 // import { EditorSidebar } from "./_components/editor-sidebar";
 // import CanvasEditor from "./_components/canvas";
 import { RingLoader } from "react-spinners";
-import { CanvasContext } from "@/context/CanvasContext";
+import { CanvasContext } from "@/context/canvas-context";
 import { api } from "@/convex/_generated/api";
 import CanvasEditor from "./_components/canvas";
 import { EditorSidebar } from "./_components/editor-sidebar";
