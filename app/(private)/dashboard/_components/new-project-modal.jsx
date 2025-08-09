@@ -42,6 +42,12 @@ export function NewProjectModal({ isOpen, onClose }) {
   const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0]
     if (file) {
+      // Explicitly block .heic files
+      if (file.name.toLowerCase().endsWith('.heic')) {
+        toast.error('HEIC files are not supported. Please convert to PNG or JPG.')
+        return
+      }
+
       setSelectedFile(file)
       setPreviewUrl(URL.createObjectURL(file))
 
