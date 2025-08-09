@@ -63,7 +63,7 @@ export function NewProjectModal({ isOpen, onClose }) {
       'image/*': ['.png', '.jpg', '.jpeg', '.webp', '.gif'],
     },
     maxFiles: 1,
-    maxSize: 20 * 1024 * 1024, // 20MB limit
+    maxSize: 5 * 1024 * 1024, // 5MB limit
   })
 
   // Handle create project with plan limit check
@@ -193,7 +193,7 @@ export function NewProjectModal({ isOpen, onClose }) {
                     : 'Upgrade to Pro to create more projects'}
                 </p>
                 <p className="text-sm text-white/50">
-                  Supports PNG, JPG, WEBP up to 20MB
+                  Supports PNG, JPG, WEBP up to 5MB
                 </p>
               </div>
             ) : (

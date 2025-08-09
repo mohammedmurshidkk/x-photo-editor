@@ -9,14 +9,25 @@ import { ProjectGrid } from './_components/project-grid'
 import { NewProjectModal } from './_components/new-project-modal'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useAuth } from '@clerk/nextjs'
 
 const DashboardPage = () => {
   const [showNewProjectModal, setShowNewProjectModal] = useState(false)
   const router = useRouter()
+  const { isLoaded, isSignedIn } = useAuth()
 
   const { data: projects, isLoading } = useConvexQuery(
     api.projects.getUserProjects,
   )
+
+  // Wait for Clerk to load and user to be signed in
+  if (!isLoaded || !isSignedIn) {
+    return (
+      <div className="min-h-screen pt-32 pb-16 relative flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400"></div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen pt-24 pb-16 relative md:pt-32">

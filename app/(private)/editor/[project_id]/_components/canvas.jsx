@@ -1,3 +1,5 @@
+'use client'
+
 import { useCanvas } from '@/context/canvas-context'
 import { api } from '@/convex/_generated/api'
 import { useConvexMutation } from '@/hooks/use-convex-query'

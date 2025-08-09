@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { useConvexQuery } from '@/hooks/use-convex-query'
 import { Loader2, Monitor } from 'lucide-react'
@@ -10,6 +10,7 @@ import { api } from '@/convex/_generated/api'
 import CanvasEditor from './_components/canvas'
 import { EditorSidebar } from './_components/editor-sidebar'
 import { EditorTopBar } from './_components/editor-topbar'
+import { useAuth } from '@clerk/nextjs'
 
 export default function EditorPage() {
   const params = useParams()
@@ -18,15 +19,37 @@ export default function EditorPage() {
   const [processingMessage, setProcessingMessage] = useState(null)
   const [showSidebar, setShowSidebar] = useState(true)
 
+  const { isLoaded, isSignedIn } = useAuth()
+
   // State for active tool
   const [activeTool, setActiveTool] = useState('resize')
 
   // Get project data
   const {
-    data: project,
+    data: fetchedProject,
     isLoading,
     error,
   } = useConvexQuery(api.projects.getProject, { projectId })
+
+  const [project, setProject] = useState(fetchedProject)
+
+  useEffect(() => {
+    if (fetchedProject) {
+      setProject(fetchedProject)
+    }
+  }, [fetchedProject])
+
+  // Wait for Clerk to load and user to be signed in
+  if (!isLoaded || !isSignedIn) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-8 w-8 animate-spin text-cyan-400" />
+          <p className="text-white/70">Loading...</p>
+        </div>
+      </div>
+    )
+  }
 
   if (isLoading) {
     return (
