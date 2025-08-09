@@ -19,8 +19,6 @@ const DashboardPage = () => {
     isLoading,
   } = useConvexQuery(api.projects.getUserProjects);
 
-  console.log('#### __  projects', projects);
-
   return (
     <div className="min-h-screen pt-32 pb-16">
       <div className="container mx-auto px-6">

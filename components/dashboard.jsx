@@ -6,8 +6,6 @@ import React from 'react';
 function Dashboard() {
   const { data, error, isLoading } = useConvexQuery(api.projects.getUserProjects);
 
-  console.log('#### __  data', data, error, isLoading)
-
   return <div>Dashboard</div>;
 }
 

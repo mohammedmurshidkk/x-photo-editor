@@ -35,7 +35,7 @@ import { FabricImage } from "fabric";
 import { api } from "@/convex/_generated/api";
 import { useConvexMutation, useConvexQuery } from "@/hooks/use-convex-query";
 import { toast } from "sonner";
-import { useCanvas } from "@/context/CanvasContext";
+import { useCanvas } from "@/context/canvas-context";
 
 const TOOLS = [
   {

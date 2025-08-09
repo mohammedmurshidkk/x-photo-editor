@@ -13,7 +13,7 @@ import {
   Maximize,
 } from "lucide-react";
 import { FabricImage, Rect } from "fabric";
-import { useCanvas } from "@/context/CanvasContext";
+import { useCanvas } from "@/context/canvas-context";
 
 const ASPECT_RATIOS = [
   { label: "Freeform", value: null, icon: Maximize },

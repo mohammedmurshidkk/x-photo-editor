@@ -15,7 +15,7 @@ import {
 import { FabricImage } from "fabric";
 import { useConvexMutation } from "@/hooks/use-convex-query";
 import { api } from "@/convex/_generated/api";
-import { useCanvas } from "@/context/CanvasContext";
+import { useCanvas } from "@/context/canvas-context";
 
 const RETOUCH_PRESETS = [
   {

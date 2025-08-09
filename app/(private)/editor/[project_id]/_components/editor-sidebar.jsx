@@ -17,7 +17,7 @@ import { AIExtenderControls } from "./_tools/ai-extend";
 import { ResizeControls } from "./_tools/resize";
 import { AIEdit } from "./_tools/ai-edit";
 import { CropContent } from "./_tools/crop";
-import { useCanvas } from "@/context/CanvasContext";
+import { useCanvas } from "@/context/canvas-context";
 
 const TOOL_CONFIGS = {
   resize: {

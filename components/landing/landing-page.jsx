@@ -1,13 +1,13 @@
 'use client';
 
 import React from 'react';
-import CustomCursor from './CustomCursor';
-import FloatingShapes from './FloatingShapes';
-import GlassNavigation from './GlassNavigation';
-import HeroSection from './HeroSection';
-import FeatureCard from './FeatureCard';
-import InteractiveStats from './InteractiveStats';
-import PricingCard from './PricingCard';
+import CustomCursor from './custom-cursor';
+import FloatingShapes from './floating-shapes';
+import GlassNavigation from './glass-navigation';
+import HeroSection from './hero-section';
+import FeatureCard from './feature-card';
+import InteractiveStats from './interactive-stats';
+import PricingCard from './pricing-card';
 
 const features = [
   {
@@ -65,7 +65,7 @@ const pricingPlans = [
   },
 ];
 
-import Contact from './Contact';
+import Contact from './contact';
 import Pricing from '../pricing';
 
 const LandingPage = () => {

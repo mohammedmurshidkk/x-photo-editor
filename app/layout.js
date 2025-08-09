@@ -1,12 +1,10 @@
-'use client'
-
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from 'sonner';
 import FloatingShapes from '@/components/floating-shapes';
 import Header from '@/components/header';
-import { ConvexClientProvider } from './ConvexClientProvider';
+import { ConvexClientProvider } from './convex-client-provider';
 import { ClerkProvider } from '@clerk/nextjs';
 
 const geistSans = Geist({
@@ -19,10 +17,10 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-// export const metadata = {
-//   title: 'x-photo-editor',
-//   description: 'AI Powered image editor',
-// };
+export const metadata = {
+  title: 'x-photo-editor',
+  description: 'AI Powered image editor',
+};
 
 export default function RootLayout({ children }) {
   return (
@@ -38,7 +36,7 @@ export default function RootLayout({ children }) {
         >
           <ClerkProvider appearance={{}}>
             <ConvexClientProvider>
-              <Header />
+              {/* <Header /> */}
               <main className="bg-slate-900 min-h-screen text-white overflow-x-hidden">
                 <FloatingShapes />
                 <Toaster richColors />

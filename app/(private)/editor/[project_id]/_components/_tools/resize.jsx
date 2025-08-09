@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Expand, Lock, Unlock, Monitor } from "lucide-react";
 import { useConvexMutation } from "@/hooks/use-convex-query";
 import { api } from "@/convex/_generated/api";
-import { useCanvas } from "@/context/CanvasContext";
+import { useCanvas } from "@/context/canvas-context";
 
 // Common aspect ratios
 const ASPECT_RATIOS = [

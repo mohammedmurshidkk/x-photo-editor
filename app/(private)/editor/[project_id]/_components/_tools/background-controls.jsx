@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { HexColorPicker } from "react-colorful";
 import { FabricImage } from "fabric";
-import { useCanvas } from "@/context/CanvasContext";
+import { useCanvas } from "@/context/canvas-context";
 
 // Unsplash API configuration
 const UNSPLASH_ACCESS_KEY = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
